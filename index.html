@@ -1,36 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Home Affordability Calculator</title>
 
-    <!-- Make it behave more like an app -->
-    <meta name="theme-color" content="#020617" />
+      <!-- App icon / favicon -->
+      <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
 
-    <!-- iOS: allow full-screen from home screen -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png" />
+      <!-- iOS home screen icon -->
+      <link rel="apple-touch-icon" href="icons/icon-192.png">
 
-    <!-- iOS home-screen icon -->
-    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+      <!-- PWA manifest -->
+      <link rel="manifest" href="manifest.webmanifest">
 
-    <!-- Web app manifest -->
-    <link rel="manifest" href="manifest.webmanifest" />
+      <!-- Theme + iOS standalone -->
+      <meta name="theme-color" content="#020617">
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <!-- Theme color for browser UI / PWA -->
-    <meta name="theme-color" content="#020617" />
-
-    <!-- iOS full-screen support -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <title>Affordability Calculator</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
+      <!-- Existing stuff -->
+      <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+      <style>
         body {
             font-family: 'Inter', sans-serif;
         }
@@ -503,6 +497,16 @@
             </div>
         </div>
     </main>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js').catch((err) => {
+            console.log('Service worker registration failed:', err);
+          });
+        });
+      }
+    </script>
+
 
     <script>
         // --- State ---
@@ -1001,3 +1005,4 @@
     </script>
 </body>
 </html>
+
