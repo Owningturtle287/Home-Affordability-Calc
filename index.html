@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affordability Calculator</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom styles for smooth transitions */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Hide scrollbar for clean UI in some areas if needed */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-slate-800 antialiased">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-10 backdrop-blur-md bg-white/90 border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="bg-blue-600 p-2 rounded-lg text-white shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                        </svg>
+                    </div>
+                    <h1 class="text-xl font-bold text-slate-900 tracking-tight">Affordability Calculator</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Input Section -->
+            <div class="lg:col-span-7 space-y-6">
+                
+                <!-- Income -->
+                <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+                    <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                        <span class="bg-green-100 text-green-600 p-1.5 rounded-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </span>
+                        Income
+                    </h2>
+                    <div>
+                        <label for="grossIncome" class="block text-sm font-medium text-slate-700">Net Monthly Income <span class="text-red-500">*</span></label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                <span class="text-gray-500 sm:text-sm">$</span>
+                            </div>
+                            <input type="number" name="grossIncome" id="grossIncome" class="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-blue-500 focus:ring-blue-500 py-2.5 border shadow-sm text-slate-900" step="0.01" placeholder="0.00" required min="0">
+                        </div>
+                        <p class="mt-1 text-sm text-gray-500">Total take-home income earned each month.</p>
+                    </div>
+                </section>
+
+                <!-- Non-Housing Expenses -->
+                <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+                    <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                        <span class="bg-orange-100 text-orange-500 p-1.5 rounded-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                            </svg>
+                        </span>
+                        Non-Housing Expenses (Monthly)
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label for="carPayment" class="block text-sm font-medium text-slate-700">Car Payment</label>
+                            <div class="mt-1 relative rounded-md shadow-sm">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                </div>
+                                <input type="number" id="carPayment" class="expense-input block w-full rounded-md border-gray-300 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border" step="0.01" placeholder="0.00">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="insurance" class="block text-sm font-medium text-slate-700">Car/Life Insurance</label>
+                            <div class="mt-1 relative rounded-md shadow-sm">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                </div>
+                                <input type="number" id="insurance" class="expense-input block w-full rounded-md border-gray-300 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border" placeholder="0.00" step="0.01">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="groceries" class="block text-sm font-medium text-slate-700">Groceries</label>
+                            <div class="mt-1 relative rounded-md shadow-sm">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                </div>
+                                <input type="number" id="groceries" class="expense-input block w-full rounded-md border-gray-300 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border" placeholder="0.00" step="0.01">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="utilities" class="block text-sm font-medium text-slate-700">Utilities (Phone, etc.)</label>
+                            <div class="mt-1 relative rounded-md shadow-sm">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                </div>
+                                <input type="number" id="utilities" class="expense-input block w-full rounded-md border-gray-300 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border" placeholder="0.00" step="0.01">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="subscriptions" class="block text-sm font-medium text-slate-700">Subscriptions</label>
+                            <div class="mt-1 relative rounded-md shadow-sm">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                </div>
+                                <input type="number" id="subscriptions" class="expense-input block w-full rounded-md border-gray-300 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border" placeholder="0.00" step="0.01">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="debt" class="block text-sm font-medium text-slate-700">Debt Payments</label>
+                            <div class="mt-1 relative rounded-md shadow-sm">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                </div>
+                                <input type="number" id="debt" class="expense-input block w-full rounded-md border-gray-300 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border" placeholder="0.00" step="0.01">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Other Expenses -->
+                    <div id="otherExpensesContainer" class="space-y-3">
+                        <!-- Dynamic items will appear here -->
+                    </div>
+
+                    <button type="button" id="addExpenseBtn" class="mt-4 inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                        Add other monthly expense
+                    </button>
+                </section>
+
+                <!-- Housing Costs -->
+                <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+                    <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                        <span class="bg-indigo-100 text-indigo-600 p-1.5 rounded-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819" />
+                            </svg>
+                        </span>
+                        Housing Costs
+                    </h2>
+
+                    <!-- Mortgage Calculator Inputs -->
+                    <div class="bg-indigo-50 rounded-xl p-5 mb-6 border border-indigo-100">
+                        <h3 class="text-sm font-bold text-indigo-900 uppercase tracking-wider mb-4">Mortgage Estimator</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="homePrice" class="block text-xs font-medium text-indigo-800">Home Price</label>
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                        <span class="text-gray-500 sm:text-xs">$</span>
+                                    </div>
+                                    <input type="number" id="homePrice" class="mortgage-calc-input block w-full rounded-md border-indigo-200 pl-7 focus:border-indigo-500 focus:ring-indigo-500 py-2 text-sm" step="0.01" placeholder="300000">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="downPayment" class="block text-xs font-medium text-indigo-800">Down Payment</label>
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                        <span class="text-gray-500 sm:text-xs">$</span>
+                                    </div>
+                                    <input type="number" id="downPayment" class="mortgage-calc-input block w-full rounded-md border-indigo-200 pl-7 focus:border-indigo-500 focus:ring-indigo-500 py-2 text-sm" step="0.01" placeholder="60000">
+                                </div>
+                                <p id="downPaymentNote" class="text-[10px] mt-1 text-indigo-800 min-h-[1.25rem]"></p>
+                            </div>
+                            <div>
+                                <label for="interestRate" class="block text-xs font-medium text-indigo-800">Interest Rate (%)</label>
+                                <input type="number" id="interestRate" class="mortgage-calc-input block w-full rounded-md border-indigo-200 focus:border-indigo-500 focus:ring-indigo-500 py-2 text-sm" placeholder="6.5" step="0.01">
+                            </div>
+                            <div>
+                                <label for="loanTerm" class="block text-xs font-medium text-indigo-800">Term (Years)</label>
+                                <select id="loanTerm" class="mortgage-calc-input block w-full rounded-md border-indigo-200 focus:border-indigo-500 focus:ring-indigo-500 py-2 text-sm">
+                                    <option value="30" selected>30 Years</option>
+                                    <option value="15">15 Years</option>
+                                    <option value="20">20 Years</option>
+                                    <option value="10">10 Years</option>
+                                </select>
+                            </div>
+                            <div class="col-span-1 md:col-span-2">
+                                <label for="taxLocation" class="block text-xs font-medium text-indigo-800">Property Tax Estimation</label>
+                                <select id="taxLocation" class="block w-full rounded-md border-indigo-200 focus:border-indigo-500 focus:ring-indigo-500 py-2 text-sm mt-1">
+                                    <option value="custom">Manual Entry / Other</option>
+                                    <option value="alabama">Alabama Counties Avg (0.35%)</option>
+                                </select>
+                            </div>
+
+                            <!-- Moved Inputs -->
+                            <div>
+                                <label for="propertyTax" class="block text-xs font-medium text-indigo-800">Property Taxes (Monthly)</label>
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                        <span class="text-gray-500 sm:text-xs">$</span>
+                                    </div>
+                                    <input type="number" id="propertyTax" class="mortgage-calc-input block w-full rounded-md border-indigo-200 pl-7 focus:border-indigo-500 focus:ring-indigo-500 py-2 text-sm" placeholder="0.00" step="0.01">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="homeInsurance" class="block text-xs font-medium text-indigo-800">Homeowners Insurance (Annual)</label>
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                        <span class="text-gray-500 sm:text-xs">$</span>
+                                    </div>
+                                    <input type="number" id="homeInsurance" class="mortgage-calc-input block w-full rounded-md border-indigo-200 pl-7 focus:border-indigo-500 focus:ring-indigo-500 py-2 text-sm" placeholder="0.00" step="0.01">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-indigo-200 flex justify-between items-center">
+                            <span class="text-sm font-semibold text-indigo-900">Est. Monthly Payment (PITI):</span>
+                            <span id="estimatedMortgageDisplay" class="text-xl font-bold text-indigo-700">$0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Direct Housing Inputs -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="col-span-1 md:col-span-2">
+                             <label for="mortgagePayment" class="block text-sm font-medium text-slate-700">Principal & Interest <span class="text-xs text-gray-500 font-normal">(Auto-filled from estimator)</span></label>
+                            <div class="mt-1 relative rounded-md shadow-sm">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                </div>
+                                <input type="number" id="mortgagePayment" class="housing-input block w-full rounded-md border-gray-300 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border bg-gray-50 text-slate-500" placeholder="0.00" step="0.01">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="hoaFees" class="block text-sm font-medium text-slate-700">HOA Fees</label>
+                            <div class="mt-1 relative rounded-md shadow-sm">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                </div>
+                                <input type="number" id="hoaFees" class="housing-input block w-full rounded-md border-gray-300 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border" placeholder="0.00" step="0.01">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="maintenance" class="block text-sm font-medium text-slate-700">Maintenance / Repairs</label>
+                            <div class="mt-1 relative rounded-md shadow-sm">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                </div>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                    <span class="text-gray-400 text-xs">Est.</span>
+                                </div>
+                                <input type="number" id="maintenance" class="housing-input block w-full rounded-md border-gray-300 pl-7 pr-10 focus:border-blue-500 focus:ring-blue-500 py-2 border" placeholder="0.00" step="0.01">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Dynamic Other Housing -->
+                    <div id="otherHousingContainer" class="space-y-3 mt-4">
+                        <!-- Dynamic items -->
+                    </div>
+                    
+                    <button type="button" id="addHousingBtn" class="mt-4 inline-flex items-center text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                        Add other housing cost
+                    </button>
+                </section>
+
+                <button id="calculateBtn" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 px-6 rounded-xl shadow-lg transform transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 text-lg">
+                    Calculate Affordability
+                </button>
+
+                <!-- Save Scenario Section (Bottom of Inputs) -->
+                <div class="pt-6 border-t border-gray-200">
+                    <h3 class="text-md font-medium text-gray-900 mb-3">Save Calculation</h3>
+                    <div class="flex flex-col gap-3">
+                        <input type="text" id="scenarioName" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-2.5 px-3 border text-sm" placeholder="Scenario Name (e.g., 300k House)">
+                        <div class="flex gap-2">
+                            <button id="saveNewScenarioBtn" class="flex-1 bg-gray-800 text-white px-4 py-2.5 rounded-md text-sm font-medium hover:bg-gray-700 shadow-sm transition-colors flex justify-center items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+                                Save New Scenario
+                            </button>
+                            <button id="saveCurrentScenarioBtn" class="flex-1 bg-white text-gray-700 border border-gray-300 px-4 py-2.5 rounded-md text-sm font-medium hover:bg-gray-50 shadow-sm transition-colors flex justify-center items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                                </svg>
+                                Save Current
+                            </button>
+                        </div>
+                        <button id="clearCalcBtn" class="w-full mt-2 bg-red-50 text-red-600 border border-red-100 px-4 py-2 rounded-md text-sm font-medium hover:bg-red-100 shadow-sm transition-colors flex justify-center items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                            </svg>
+                            Clear Calculation
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">Saves directly to your browser. Load a scenario to update it.</p>
+                </div>
+
+            </div>
+
+            <!-- Results Section -->
+            <div class="lg:col-span-5">
+                <div class="lg:sticky lg:top-8 space-y-6">
+                    
+                    <!-- Saved Scenarios List (Top of Results) -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-blue-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                            </svg>
+                            Saved Scenarios
+                        </h3>
+                        <div id="scenarioList" class="space-y-2 max-h-60 overflow-y-auto no-scrollbar pr-1">
+                            <p class="text-sm text-gray-400 text-center italic py-2">No saved scenarios</p>
+                        </div>
+                    </div>
+
+                    <!-- Summary Card -->
+                    <div id="summaryCard" class="bg-slate-900 text-white rounded-xl shadow-xl overflow-hidden border border-slate-800">
+                        <div class="p-6">
+                            <h3 class="text-lg font-medium text-slate-300 uppercase tracking-wider mb-1">Monthly Summary</h3>
+                            <div class="mt-6 space-y-6">
+                                <div>
+                                    <p class="text-sm text-slate-400">Net Monthly Income</p>
+                                    <p id="resIncome" class="text-3xl font-bold tracking-tight">$0.00</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-slate-400">Total Monthly Expenses</p>
+                                    <p id="resTotalExpenses" class="text-3xl font-bold tracking-tight text-red-300">$0.00</p>
+                                </div>
+                                <div class="pt-4 border-t border-slate-700">
+                                    <p class="text-sm text-slate-400">Money Left Over</p>
+                                    <p id="resLeftOver" class="text-5xl font-extrabold text-green-400">$0.00</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800 px-6 py-4">
+                             <div class="flex justify-between items-center">
+                                <span class="text-sm text-slate-300">Left Over %</span>
+                                <span id="resLeftOverPct" class="text-xl font-bold text-green-400">0%</span>
+                             </div>
+                             <div class="w-full bg-slate-700 rounded-full h-2.5 mt-2">
+                                <div id="leftOverBar" class="bg-green-500 h-2.5 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Breakdown Card -->
+                    <div id="breakdownCard" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 opacity-50 pointer-events-none transition-opacity duration-300">
+                        <h3 class="text-lg font-semibold text-slate-900 mb-4">Expense Breakdown</h3>
+                        
+                        <div class="space-y-5">
+                            <!-- Housing -->
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium text-slate-700">Housing Costs</span>
+                                    <span class="text-sm font-medium text-slate-900" id="resHousingVal">$0.00</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div id="housingBar" class="bg-indigo-600 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                                </div>
+                                <div class="flex justify-end mt-1">
+                                    <span class="text-xs text-gray-500" id="resHousingPct">0% of income</span>
+                                </div>
+                            </div>
+
+                            <!-- Non-Housing -->
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium text-slate-700">Non-Housing Expenses</span>
+                                    <span class="text-sm font-medium text-slate-900" id="resNonHousingVal">$0.00</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div id="nonHousingBar" class="bg-orange-500 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                                </div>
+                                <div class="flex justify-end mt-1">
+                                    <span class="text-xs text-gray-500" id="resNonHousingPct">0% of income</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Warning Message Container -->
+                        <div id="warningContainer" class="mt-6 hidden">
+                            <div class="bg-red-50 border-l-4 border-red-400 p-4">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm text-red-700" id="warningMessage">
+                                            Expenses exceed income!
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Net Worth Card -->
+                    <div id="netWorthCard" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-emerald-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
+                            </svg>
+                            Net Worth Tracker
+                        </h3>
+                        
+                        <div class="mb-6 text-center p-4 bg-emerald-50 rounded-lg border border-emerald-100">
+                            <p class="text-sm text-emerald-800 font-medium uppercase tracking-wide">Total Net Worth</p>
+                            <p id="totalNetWorth" class="text-4xl font-extrabold text-emerald-700 mt-1">$0.00</p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label for="netWorthJed" class="block text-sm font-medium text-slate-700">Jed's Account</label>
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                        <span class="text-gray-500 sm:text-sm">$</span>
+                                    </div>
+                                    <input type="number" id="netWorthJed" class="net-worth-input block w-full rounded-md border-gray-300 pl-7 focus:border-emerald-500 focus:ring-emerald-500 py-2 border" placeholder="0.00" step="0.01">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="netWorthOlivia" class="block text-sm font-medium text-slate-700">Olivia's Account</label>
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                        <span class="text-gray-500 sm:text-sm">$</span>
+                                    </div>
+                                    <input type="number" id="netWorthOlivia" class="net-worth-input block w-full rounded-md border-gray-300 pl-7 focus:border-emerald-500 focus:ring-emerald-500 py-2 border" placeholder="0.00" step="0.01">
+                                </div>
+                            </div>
+                            
+                            <!-- Dynamic Assets -->
+                            <div id="otherAssetsContainer" class="space-y-3"></div>
+
+                            <button type="button" id="addAssetBtn" class="mt-2 inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-800 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+                                Add other account
+                            </button>
+                            
+                            <div class="mt-6 pt-4 border-t border-gray-100">
+                                <button id="clearNetWorthBtn" class="text-xs text-gray-400 hover:text-red-500 transition-colors flex items-center gap-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                    </svg>
+                                    Clear Net Worth
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- State ---
+        let currentScenarioName = null;
+
+        // --- Utilities ---
+        const formatCurrency = (num) => {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num);
+        };
+
+        const parseInput = (id) => {
+            const val = parseFloat(document.getElementById(id).value);
+            return isNaN(val) ? 0 : val;
+        };
+
+        const createDynamicInput = (containerId, placeholderText, onRemove) => {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = 'flex items-center gap-2 fade-in';
+            div.innerHTML = `
+                <div class="relative rounded-md shadow-sm flex-grow">
+                    <input type="text" class="block w-full rounded-md border-gray-300 focus:border-blue-500 focus:ring-blue-500 py-2 px-3 border text-sm" placeholder="${placeholderText || 'Label'}">
+                </div>
+                <div class="relative rounded-md shadow-sm w-1/3">
+                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                        <span class="text-gray-500 sm:text-sm">$</span>
+                    </div>
+                    <input type="number" step="0.01" class="dynamic-amount block w-full rounded-md border-gray-300 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border text-sm" placeholder="0">
+                </div>
+                <button type="button" class="text-red-400 hover:text-red-600 p-2 remove-btn transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            `;
+            
+            div.querySelector('.remove-btn').addEventListener('click', () => {
+                div.remove();
+                if(onRemove) onRemove();
+            });
+
+            container.appendChild(div);
+            return div;
+        };
+
+        // --- Event Listeners for Dynamic Fields ---
+        document.getElementById('addExpenseBtn').addEventListener('click', () => {
+            createDynamicInput('otherExpensesContainer', 'Expense Name');
+        });
+
+        document.getElementById('addHousingBtn').addEventListener('click', () => {
+            createDynamicInput('otherHousingContainer', 'Cost Name');
+        });
+
+        // --- Mortgage & Housing Estimation Logic ---
+        const calculateHousingEstimates = () => {
+            const price = parseInput('homePrice');
+            const down = parseInput('downPayment');
+            const rate = parseInput('interestRate');
+            const termYears = parseInput('loanTerm');
+            const taxLocation = document.getElementById('taxLocation').value;
+            
+            // Elements
+            const taxInput = document.getElementById('propertyTax');
+            const insInput = document.getElementById('homeInsurance');
+            const pAndIInput = document.getElementById('mortgagePayment');
+            const displayEl = document.getElementById('estimatedMortgageDisplay');
+
+            // 1. Down Payment Note
+            if (price > 0) {
+                const downPct = (down / price) * 100;
+                let note = `${downPct.toFixed(1)}% of home price. `;
+                if (downPct < 20) {
+                    note += "PMI may apply (< 20%).";
+                } else {
+                    note += "No PMI required (≥ 20%).";
+                }
+                document.getElementById('downPaymentNote').innerText = note;
+            } else {
+                document.getElementById('downPaymentNote').innerText = '';
+            }
+
+            // 2. Property Tax Auto-Calc
+            if (taxLocation === 'alabama' && price > 0) {
+                const annualTax = price * 0.0035;
+                const monthlyTax = annualTax / 12;
+                // Avoid overwriting if user is actively typing in the tax field
+                if (document.activeElement !== taxInput) {
+                    taxInput.value = monthlyTax.toFixed(2);
+                }
+            }
+
+            // 3. Calculate P&I
+            let monthlyPI = 0;
+            if (price > 0 && rate > 0 && termYears > 0) {
+                const principal = price - down;
+                if (principal > 0) {
+                    const monthlyRate = rate / 100 / 12;
+                    const numberOfPayments = termYears * 12;
+                    monthlyPI = principal * ( (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / (Math.pow(1 + monthlyRate, numberOfPayments) - 1) );
+                }
+            }
+
+            // Update P&I Input (used for final detailed breakdown)
+            if (monthlyPI > 0) {
+                // Only update if calculated value is valid
+                pAndIInput.value = monthlyPI.toFixed(2);
+            } else {
+                if (price > 0 || rate > 0) pAndIInput.value = ''; 
+            }
+            
+            // 4. Total Monthly Payment (PITI) for Display
+            const pAndIVal = parseInput('mortgagePayment'); 
+            const monthlyTaxVal = parseInput('propertyTax');
+            const annualInsVal = parseInput('homeInsurance');
+            const monthlyInsVal = annualInsVal / 12;
+            
+            const totalEst = pAndIVal + monthlyTaxVal + monthlyInsVal;
+            
+            displayEl.innerText = formatCurrency(totalEst);
+        };
+
+        const mortgageInputs = document.querySelectorAll('.mortgage-calc-input');
+        mortgageInputs.forEach(input => {
+            input.addEventListener('input', calculateHousingEstimates);
+        });
+        
+        document.getElementById('taxLocation').addEventListener('change', calculateHousingEstimates);
+
+
+        // --- Main Calculation Logic ---
+        document.getElementById('calculateBtn').addEventListener('click', () => {
+            // 1. Get Income
+            const income = parseInput('grossIncome');
+            
+            // Validation
+            if (income <= 0) {
+                alert("Please enter a valid Net Monthly Income greater than zero.");
+                return;
+            }
+
+            // 2. Get Fixed Non-Housing Expenses
+            let nonHousingTotal = 0;
+            const nonHousingIds = ['carPayment', 'insurance', 'groceries', 'utilities', 'subscriptions', 'debt'];
+            nonHousingIds.forEach(id => nonHousingTotal += parseInput(id));
+
+            // 3. Get Dynamic Non-Housing
+            const dynamicExpenses = document.querySelectorAll('#otherExpensesContainer .dynamic-amount');
+            dynamicExpenses.forEach(input => {
+                const val = parseFloat(input.value);
+                if (!isNaN(val)) nonHousingTotal += val;
+            });
+
+            // 4. Get Fixed Housing Costs
+            let housingTotal = 0;
+            
+            // Special handling for annual insurance
+            const annualHomeInsurance = parseInput('homeInsurance');
+            housingTotal += (annualHomeInsurance / 12);
+
+            const housingIds = ['mortgagePayment', 'propertyTax', 'hoaFees', 'maintenance'];
+            housingIds.forEach(id => housingTotal += parseInput(id));
+
+            // 5. Get Dynamic Housing Costs
+            const dynamicHousing = document.querySelectorAll('#otherHousingContainer .dynamic-amount');
+            dynamicHousing.forEach(input => {
+                const val = parseFloat(input.value);
+                if (!isNaN(val)) housingTotal += val;
+            });
+
+            // 6. Calculations
+            const totalExpenses = nonHousingTotal + housingTotal;
+            const leftOver = income - totalExpenses;
+            
+            const housingPct = (housingTotal / income) * 100;
+            const nonHousingPct = (nonHousingTotal / income) * 100;
+            const leftOverPct = (leftOver / income) * 100;
+
+            // 7. Update UI
+            
+            // Summary
+            document.getElementById('resIncome').innerText = formatCurrency(income);
+            document.getElementById('resTotalExpenses').innerText = formatCurrency(totalExpenses);
+            const leftOverEl = document.getElementById('resLeftOver');
+            leftOverEl.innerText = formatCurrency(leftOver);
+            
+            if (leftOver < 0) {
+                leftOverEl.classList.remove('text-green-400');
+                leftOverEl.classList.add('text-red-400');
+                document.getElementById('warningContainer').classList.remove('hidden');
+                document.getElementById('warningMessage').innerText = `You are over budget by ${formatCurrency(Math.abs(leftOver))}.`;
+            } else {
+                leftOverEl.classList.remove('text-red-400');
+                leftOverEl.classList.add('text-green-400');
+                document.getElementById('warningContainer').classList.add('hidden');
+            }
+
+            // Breakdown Values
+            document.getElementById('resHousingVal').innerText = formatCurrency(housingTotal);
+            document.getElementById('resNonHousingVal').innerText = formatCurrency(nonHousingTotal);
+
+            // Percentages Text
+            document.getElementById('resHousingPct').innerText = `${housingPct.toFixed(1)}% of income`;
+            document.getElementById('resNonHousingPct').innerText = `${nonHousingPct.toFixed(1)}% of income`;
+            
+            // Left Over Pct Text
+            document.getElementById('resLeftOverPct').innerText = `${leftOverPct.toFixed(1)}%`;
+
+            // Progress Bars (Clamp at 100%)
+            const setBarWidth = (id, pct) => {
+                const el = document.getElementById(id);
+                const width = Math.max(0, Math.min(pct, 100)); // 0 to 100
+                el.style.width = `${width}%`;
+            };
+
+            setBarWidth('housingBar', housingPct);
+            setBarWidth('nonHousingBar', nonHousingPct);
+            setBarWidth('leftOverBar', leftOverPct);
+
+            // Reveal Results
+            const breakdownCard = document.getElementById('breakdownCard');
+            breakdownCard.classList.remove('opacity-50', 'pointer-events-none');
+            
+            // Smooth scroll to results on mobile
+            if (window.innerWidth < 1024) {
+                document.getElementById('summaryCard').scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        // --- Net Worth Logic ---
+        const calculateNetWorth = () => {
+            let total = 0;
+            // Fixed Inputs
+            total += parseInput('netWorthJed');
+            total += parseInput('netWorthOlivia');
+            
+            // Dynamic Inputs
+            const dynamicAssets = document.querySelectorAll('#otherAssetsContainer .dynamic-amount');
+            dynamicAssets.forEach(input => {
+                const val = parseFloat(input.value);
+                if (!isNaN(val)) total += val;
+            });
+
+            document.getElementById('totalNetWorth').innerText = formatCurrency(total);
+        };
+
+        // Event Listeners for Net Worth
+        document.getElementById('netWorthJed').addEventListener('input', calculateNetWorth);
+        document.getElementById('netWorthOlivia').addEventListener('input', calculateNetWorth);
+        
+        document.getElementById('addAssetBtn').addEventListener('click', () => {
+            const div = createDynamicInput('otherAssetsContainer', 'Account Name', calculateNetWorth);
+            const input = div.querySelector('.dynamic-amount');
+            input.addEventListener('input', calculateNetWorth);
+        });
+
+        // --- Scenario Manager Logic ---
+        const SCENARIO_KEY = 'affordability_scenarios';
+
+        const collectFormData = () => {
+            const data = {
+                static: {},
+                dynamicExpenses: [],
+                dynamicHousing: [],
+                dynamicAssets: []
+            };
+
+            // Static inputs
+            const ids = [
+                'grossIncome', 'carPayment', 'insurance', 'groceries', 'utilities', 
+                'subscriptions', 'debt', 'homePrice', 'downPayment', 'interestRate', 
+                'loanTerm', 'taxLocation', 'propertyTax', 'homeInsurance', 
+                'mortgagePayment', 'hoaFees', 'maintenance',
+                'netWorthJed', 'netWorthOlivia'
+            ];
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) data.static[id] = el.value;
+            });
+
+            // Dynamic Expenses
+            document.querySelectorAll('#otherExpensesContainer > div').forEach(div => {
+                const label = div.querySelector('input[type="text"]').value;
+                const amount = div.querySelector('input[type="number"]').value;
+                if(label || amount) data.dynamicExpenses.push({ label, amount });
+            });
+
+            // Dynamic Housing
+            document.querySelectorAll('#otherHousingContainer > div').forEach(div => {
+                const label = div.querySelector('input[type="text"]').value;
+                const amount = div.querySelector('input[type="number"]').value;
+                if(label || amount) data.dynamicHousing.push({ label, amount });
+            });
+
+            // Dynamic Assets (Net Worth)
+            document.querySelectorAll('#otherAssetsContainer > div').forEach(div => {
+                const label = div.querySelector('input[type="text"]').value;
+                const amount = div.querySelector('input[type="number"]').value;
+                if(label || amount) data.dynamicAssets.push({ label, amount });
+            });
+
+            return data;
+        };
+
+        const populateFormData = (data) => {
+            if (!data) return;
+
+            // Static
+            if (data.static) {
+                Object.keys(data.static).forEach(id => {
+                    const el = document.getElementById(id);
+                    if(el) el.value = data.static[id];
+                });
+            }
+
+            // Dynamic Expenses
+            const expContainer = document.getElementById('otherExpensesContainer');
+            expContainer.innerHTML = '';
+            if (data.dynamicExpenses) {
+                data.dynamicExpenses.forEach(item => {
+                    createDynamicInput('otherExpensesContainer', 'Expense Name');
+                    const lastDiv = expContainer.lastElementChild;
+                    lastDiv.querySelector('input[type="text"]').value = item.label;
+                    lastDiv.querySelector('input[type="number"]').value = item.amount;
+                });
+            }
+
+            // Dynamic Housing
+            const houseContainer = document.getElementById('otherHousingContainer');
+            houseContainer.innerHTML = '';
+            if (data.dynamicHousing) {
+                data.dynamicHousing.forEach(item => {
+                    createDynamicInput('otherHousingContainer', 'Cost Name');
+                    const lastDiv = houseContainer.lastElementChild;
+                    lastDiv.querySelector('input[type="text"]').value = item.label;
+                    lastDiv.querySelector('input[type="number"]').value = item.amount;
+                });
+            }
+
+            // Dynamic Assets
+            const assetContainer = document.getElementById('otherAssetsContainer');
+            assetContainer.innerHTML = '';
+            if (data.dynamicAssets) {
+                data.dynamicAssets.forEach(item => {
+                    // We need to manually attach listeners since populate bypasses the button click
+                    const div = createDynamicInput('otherAssetsContainer', 'Account Name', calculateNetWorth);
+                    const input = div.querySelector('.dynamic-amount');
+                    input.addEventListener('input', calculateNetWorth);
+                    
+                    div.querySelector('input[type="text"]').value = item.label;
+                    input.value = item.amount;
+                });
+            }
+
+            // Trigger updates
+            calculateHousingEstimates();
+            calculateNetWorth(); // Update Net Worth
+            document.getElementById('calculateBtn').click();
+        };
+
+        const getSavedScenarios = () => {
+            const saved = localStorage.getItem(SCENARIO_KEY);
+            return saved ? JSON.parse(saved) : {};
+        };
+
+        const renderScenarios = () => {
+            const list = document.getElementById('scenarioList');
+            list.innerHTML = '';
+            const scenarios = getSavedScenarios();
+            
+            if (Object.keys(scenarios).length === 0) {
+                list.innerHTML = '<p class="text-sm text-gray-400 text-center italic py-2">No saved scenarios</p>';
+                return;
+            }
+
+            Object.keys(scenarios).forEach(name => {
+                const div = document.createElement('div');
+                div.className = 'flex items-center justify-between bg-blue-50 p-3 rounded-lg border border-blue-100 hover:bg-blue-100 transition-colors cursor-pointer group';
+                
+                // Highlight active
+                if(currentScenarioName === name) {
+                    div.classList.add('ring-2', 'ring-blue-500', 'bg-blue-100');
+                }
+
+                div.innerHTML = `
+                    <span class="text-sm font-medium text-gray-800 truncate flex-grow mr-2">${name}</span>
+                    <div class="flex gap-2">
+                        <button class="delete-btn text-gray-400 hover:text-red-600 p-1 opacity-0 group-hover:opacity-100 transition-opacity" title="Delete">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
+                        </button>
+                    </div>
+                `;
+                
+                // Clicking the row loads the scenario
+                const loadAction = (e) => {
+                    // Don't trigger if deleting
+                    if (e.target.closest('.delete-btn')) return;
+                    
+                    currentScenarioName = name;
+                    document.getElementById('scenarioName').value = name;
+                    populateFormData(scenarios[name]);
+                    renderScenarios(); // Re-render to update selection styles
+                };
+                
+                div.onclick = loadAction;
+
+                div.querySelector('.delete-btn').onclick = (e) => {
+                    e.stopPropagation(); // Prevent load
+                    if(confirm('Delete scenario "' + name + '"?')) {
+                        const s = getSavedScenarios();
+                        delete s[name];
+                        localStorage.setItem(SCENARIO_KEY, JSON.stringify(s));
+                        if(currentScenarioName === name) {
+                            currentScenarioName = null;
+                            document.getElementById('scenarioName').value = '';
+                        }
+                        renderScenarios();
+                    }
+                };
+                list.appendChild(div);
+            });
+        };
+
+        const saveScenario = (name) => {
+             const scenarios = getSavedScenarios();
+             scenarios[name] = collectFormData();
+             localStorage.setItem(SCENARIO_KEY, JSON.stringify(scenarios));
+             
+             currentScenarioName = name; // Set active
+             renderScenarios();
+             
+             // Visual feedback button flash
+             const btn = document.activeElement;
+             if(btn && btn.tagName === 'BUTTON') {
+                 const origText = btn.innerHTML;
+                 btn.innerHTML = '<span class="text-green-400 flex items-center justify-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg> Saved!</span>';
+                 setTimeout(() => btn.innerHTML = origText, 2000);
+             }
+        };
+
+        document.getElementById('saveNewScenarioBtn').addEventListener('click', () => {
+            const name = document.getElementById('scenarioName').value.trim();
+            if (!name) return alert('Please enter a scenario name');
+            const scenarios = getSavedScenarios();
+            if (scenarios[name] && !confirm('A scenario named "' + name + '" already exists. Overwrite?')) return;
+            
+            saveScenario(name);
+        });
+
+        document.getElementById('saveCurrentScenarioBtn').addEventListener('click', () => {
+            if (!currentScenarioName) {
+                return alert('No scenario is currently loaded. Please enter a name and click "Save New Scenario" to create one.');
+            }
+            saveScenario(currentScenarioName);
+        });
+
+        // --- Clear Functions ---
+        document.getElementById('clearCalcBtn').addEventListener('click', () => {
+            if(!confirm("Clear all income, expenses, and housing inputs? Net Worth will be kept.")) return;
+            
+            // Clear inputs except Net Worth
+            const idsToClear = [
+                'grossIncome', 'carPayment', 'insurance', 'groceries', 'utilities', 
+                'subscriptions', 'debt', 'homePrice', 'downPayment', 'interestRate', 
+                'propertyTax', 'homeInsurance', 'mortgagePayment', 'hoaFees', 'maintenance'
+            ];
+            idsToClear.forEach(id => {
+                 const el = document.getElementById(id);
+                 if(el) el.value = '';
+            });
+            
+            // Reset selects
+            document.getElementById('loanTerm').value = '30';
+            document.getElementById('taxLocation').value = 'custom';
+            document.getElementById('downPaymentNote').innerText = '';
+
+            // Clear dynamics
+            document.getElementById('otherExpensesContainer').innerHTML = '';
+            document.getElementById('otherHousingContainer').innerHTML = '';
+            
+            // Trigger Calc to zero out results
+            document.getElementById('calculateBtn').click();
+        });
+
+        document.getElementById('clearNetWorthBtn').addEventListener('click', () => {
+            if(!confirm("Clear all Net Worth data?")) return;
+            
+            document.getElementById('netWorthJed').value = '';
+            document.getElementById('netWorthOlivia').value = '';
+            document.getElementById('otherAssetsContainer').innerHTML = '';
+            calculateNetWorth();
+        });
+
+        // Init
+        renderScenarios();
+    </script>
+</body>
+</html>
