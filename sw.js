@@ -1,11 +1,11 @@
-const CACHE_NAME = 'home-affordability-v1';
+const CACHE_NAME = 'home-affordability-v2'; // bump version when you change assets
 const ASSETS = [
   './',
   './index.html',
   './manifest.webmanifest',
-  './icons/icon-32.png',
-  './icons/icon-192.png',
-  './icons/icon-512.png'
+  './icons/homecalc-icon-32.png',
+  './icons/homecalc-icon-192.png',
+  './icons/homecalc-icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -17,7 +17,11 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
+      Promise.all(
+        keys
+          .filter((k) => k !== CACHE_NAME)
+          .map((k) => caches.delete(k))
+      )
     )
   );
 });
