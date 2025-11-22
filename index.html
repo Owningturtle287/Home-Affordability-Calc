@@ -1,34 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Home Affordability Calculator</title>
-
-      <!-- App icon / favicon -->
-      <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
-
-      <!-- iOS home screen icon -->
-      <link rel="apple-touch-icon" href="icons/icon-192.png">
-
-      <!-- PWA manifest -->
-      <link rel="manifest" href="manifest.webmanifest">
-
-      <!-- Theme + iOS standalone -->
-      <meta name="theme-color" content="#020617">
-      <meta name="apple-mobile-web-app-capable" content="yes">
-      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-      <!-- Existing stuff -->
-      <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-      <style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affordability Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
         body {
             font-family: 'Inter', sans-serif;
         }
-        /* Custom styles for smooth transitions */
         .fade-in {
             animation: fadeIn 0.5s ease-in-out;
         }
@@ -36,7 +24,6 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* Hide scrollbar for clean UI in some areas if needed */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -46,11 +33,10 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 text-slate-800 antialiased">
+<body class="bg-gray-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 antialiased transition-colors duration-300">
 
-    <!-- Header -->
-    <header class="bg-white shadow-sm sticky top-0 z-10 backdrop-blur-md bg-white/90 border-b border-slate-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <header class="bg-white/90 dark:bg-slate-900/90 shadow-sm sticky top-0 z-30 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <div class="bg-blue-600 p-2 rounded-lg text-white shadow-md">
@@ -58,7 +44,67 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                         </svg>
                     </div>
-                    <h1 class="text-xl font-bold text-slate-900 tracking-tight">Affordability Calculator</h1>
+                    <div class="flex items-baseline gap-2">
+                        <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight hidden sm:block">Affordability Calculator</h1>
+                        <h1 class="text-lg font-bold text-slate-900 dark:text-white tracking-tight sm:hidden">Affordability</h1>
+                        <span class="text-xs text-slate-400 font-medium">v1.0.4</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <div class="relative">
+                        <button id="scenariosMenuBtn" class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-slate-300 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-slate-600 text-sm font-medium">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-blue-600 dark:text-blue-400">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                            </svg>
+                            Saved Scenarios
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-1 text-gray-400">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </button>
+                        <div id="savedScenariosDropdown" class="hidden absolute right-0 mt-2 w-72 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-gray-100 dark:border-slate-700 z-50 overflow-hidden transform transition-all origin-top-right">
+                            <div class="p-3 border-b border-gray-50 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/50">
+                                <h3 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Your Saved Scenarios</h3>
+                            </div>
+                            <div id="scenarioList" class="max-h-80 overflow-y-auto no-scrollbar p-2 space-y-1"></div>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <button id="settingsMenuBtn" class="flex items-center justify-center w-10 h-10 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-slate-300 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-slate-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.581-.495.644-.869l.214-1.281z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </button>
+                        <div id="settingsDropdown" class="hidden absolute right-0 mt-2 w-64 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-gray-100 dark:border-slate-700 z-50 overflow-hidden transform transition-all origin-top-right">
+                            <div class="p-3 border-b border-gray-50 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/50">
+                                <h3 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Settings</h3>
+                            </div>
+                            <div class="p-3 space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-slate-700 dark:text-slate-300">Dark Mode</span>
+                                    <button id="toggleDarkModeBtn" class="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200 dark:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900">
+                                        <span id="darkModeKnob" class="translate-x-1 inline-block h-4 w-4 transform rounded-full bg-white transition dark:translate-x-6"></span>
+                                    </button>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-slate-700 dark:text-slate-300">Show Annual Totals</span>
+                                    <button id="toggleAnnualBtn" class="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900">
+                                        <span id="annualKnob" class="translate-x-1 inline-block h-4 w-4 transform rounded-full bg-white transition"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-2 bg-gray-50 dark:bg-slate-800/50 border-t border-gray-100 dark:border-slate-800">
+                                <button id="changeLogBtn" class="w-full text-left px-2 py-1.5 text-sm text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-white dark:hover:bg-slate-700 rounded-md transition-colors flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                    </svg>
+                                    View Change Log
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -67,35 +113,33 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <!-- Input Section -->
             <div class="lg:col-span-7 space-y-6">
                 
-                <!-- Income -->
-                <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
-                    <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                        <span class="bg-green-100 text-green-600 p-1.5 rounded-md">
+                <section class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-200 dark:border-slate-800 p-6 hover:shadow-md transition-all duration-200">
+                    <h2 class="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                        <span class="bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 p-1.5 rounded-md">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </span>
                         Income
                     </h2>
-                    <div>
-                        <label for="grossIncome" class="block text-sm font-medium text-slate-700">Net Monthly Income <span class="text-red-500">*</span></label>
-                        <div class="mt-1 relative rounded-md shadow-sm">
-                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                <span class="text-gray-500 sm:text-sm">$</span>
-                            </div>
-                            <input type="number" name="grossIncome" id="grossIncome" class="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-blue-500 focus:ring-blue-500 py-2.5 border shadow-sm text-slate-900" step="0.01" placeholder="0.00" required min="0">
+                    
+                    <div id="incomeContainer" class="space-y-3">
                         </div>
-                        <p class="mt-1 text-sm text-gray-500">Total take-home income earned each month.</p>
-                    </div>
+
+                    <button type="button" id="addIncomeBtn" class="mt-4 inline-flex items-center text-sm font-medium text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                        Add another separate income
+                    </button>
+                    <p class="mt-3 text-xs text-gray-500 dark:text-gray-400">Total take-home income earned each month from all sources.</p>
                 </section>
 
-                <!-- Non-Housing Expenses -->
-                <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
-                    <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                        <span class="bg-orange-100 text-orange-500 p-1.5 rounded-md">
+                <section class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-200 dark:border-slate-800 p-6 hover:shadow-md transition-all duration-200">
+                    <h2 class="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                        <span class="bg-orange-100 dark:bg-orange-900/30 text-orange-500 dark:text-orange-400 p-1.5 rounded-md">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                             </svg>
@@ -105,67 +149,65 @@
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div>
-                            <label for="carPayment" class="block text-sm font-medium text-slate-700">Car Payment</label>
+                            <label for="carPayment" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Car Payment</label>
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                    <span class="text-gray-500 dark:text-gray-400 sm:text-sm">$</span>
                                 </div>
-                                <input type="number" id="carPayment" class="expense-input block w-full rounded-md border-gray-300 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border" step="0.01" placeholder="0.00">
+                                <input type="text" inputmode="decimal" id="carPayment" class="formatted-input expense-input block w-full rounded-md border-gray-300 dark:border-slate-700 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="0.00">
                             </div>
                         </div>
                         <div>
-                            <label for="insurance" class="block text-sm font-medium text-slate-700">Car/Life Insurance</label>
+                            <label for="insurance" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Car/Life Insurance</label>
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                    <span class="text-gray-500 dark:text-gray-400 sm:text-sm">$</span>
                                 </div>
-                                <input type="number" id="insurance" class="expense-input block w-full rounded-md border-gray-300 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border" placeholder="0.00" step="0.01">
+                                <input type="text" inputmode="decimal" id="insurance" class="formatted-input expense-input block w-full rounded-md border-gray-300 dark:border-slate-700 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="0.00">
                             </div>
                         </div>
                         <div>
-                            <label for="groceries" class="block text-sm font-medium text-slate-700">Groceries</label>
+                            <label for="groceries" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Groceries</label>
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                    <span class="text-gray-500 dark:text-gray-400 sm:text-sm">$</span>
                                 </div>
-                                <input type="number" id="groceries" class="expense-input block w-full rounded-md border-gray-300 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border" placeholder="0.00" step="0.01">
+                                <input type="text" inputmode="decimal" id="groceries" class="formatted-input expense-input block w-full rounded-md border-gray-300 dark:border-slate-700 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="0.00">
                             </div>
                         </div>
                         <div>
-                            <label for="utilities" class="block text-sm font-medium text-slate-700">Utilities (Phone, etc.)</label>
+                            <label for="utilities" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Utilities (Phone, etc.)</label>
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                    <span class="text-gray-500 dark:text-gray-400 sm:text-sm">$</span>
                                 </div>
-                                <input type="number" id="utilities" class="expense-input block w-full rounded-md border-gray-300 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border" placeholder="0.00" step="0.01">
+                                <input type="text" inputmode="decimal" id="utilities" class="formatted-input expense-input block w-full rounded-md border-gray-300 dark:border-slate-700 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="0.00">
                             </div>
                         </div>
                         <div>
-                            <label for="subscriptions" class="block text-sm font-medium text-slate-700">Subscriptions</label>
+                            <label for="subscriptions" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Subscriptions</label>
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                    <span class="text-gray-500 dark:text-gray-400 sm:text-sm">$</span>
                                 </div>
-                                <input type="number" id="subscriptions" class="expense-input block w-full rounded-md border-gray-300 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border" placeholder="0.00" step="0.01">
+                                <input type="text" inputmode="decimal" id="subscriptions" class="formatted-input expense-input block w-full rounded-md border-gray-300 dark:border-slate-700 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="0.00">
                             </div>
                         </div>
                         <div>
-                            <label for="debt" class="block text-sm font-medium text-slate-700">Debt Payments</label>
+                            <label for="debt" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Debt Payments</label>
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                    <span class="text-gray-500 dark:text-gray-400 sm:text-sm">$</span>
                                 </div>
-                                <input type="number" id="debt" class="expense-input block w-full rounded-md border-gray-300 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border" placeholder="0.00" step="0.01">
+                                <input type="text" inputmode="decimal" id="debt" class="formatted-input expense-input block w-full rounded-md border-gray-300 dark:border-slate-700 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="0.00">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Dynamic Other Expenses -->
                     <div id="otherExpensesContainer" class="space-y-3">
-                        <!-- Dynamic items will appear here -->
-                    </div>
+                        </div>
 
-                    <button type="button" id="addExpenseBtn" class="mt-4 inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors">
+                    <button type="button" id="addExpenseBtn" class="mt-4 inline-flex items-center text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
@@ -173,10 +215,9 @@
                     </button>
                 </section>
 
-                <!-- Housing Costs -->
-                <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
-                    <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                        <span class="bg-indigo-100 text-indigo-600 p-1.5 rounded-md">
+                <section class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-200 dark:border-slate-800 p-6 hover:shadow-md transition-all duration-200">
+                    <h2 class="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                        <span class="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 p-1.5 rounded-md">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819" />
                             </svg>
@@ -184,36 +225,35 @@
                         Housing Costs
                     </h2>
 
-                    <!-- Mortgage Calculator Inputs -->
-                    <div class="bg-indigo-50 rounded-xl p-5 mb-6 border border-indigo-100">
-                        <h3 class="text-sm font-bold text-indigo-900 uppercase tracking-wider mb-4">Mortgage Estimator</h3>
+                    <div class="bg-indigo-50 dark:bg-indigo-950/40 rounded-xl p-5 mb-6 border border-indigo-100 dark:border-indigo-900/50">
+                        <h3 class="text-sm font-bold text-indigo-900 dark:text-indigo-300 uppercase tracking-wider mb-4">Mortgage Estimator</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label for="homePrice" class="block text-xs font-medium text-indigo-800">Home Price</label>
+                                <label for="homePrice" class="block text-xs font-medium text-indigo-800 dark:text-indigo-200">Home Price</label>
                                 <div class="mt-1 relative rounded-md shadow-sm">
                                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                        <span class="text-gray-500 sm:text-xs">$</span>
+                                        <span class="text-gray-500 dark:text-gray-400 sm:text-xs">$</span>
                                     </div>
-                                    <input type="number" id="homePrice" class="mortgage-calc-input block w-full rounded-md border-indigo-200 pl-7 focus:border-indigo-500 focus:ring-indigo-500 py-2 text-sm" step="0.01" placeholder="300000">
+                                    <input type="text" inputmode="numeric" id="homePrice" class="formatted-input mortgage-calc-input block w-full rounded-md border-indigo-200 dark:border-indigo-800 pl-7 focus:border-indigo-500 focus:ring-indigo-500 py-2 text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="300,000">
                                 </div>
                             </div>
                             <div>
-                                <label for="downPayment" class="block text-xs font-medium text-indigo-800">Down Payment</label>
+                                <label for="downPayment" class="block text-xs font-medium text-indigo-800 dark:text-indigo-200">Down Payment</label>
                                 <div class="mt-1 relative rounded-md shadow-sm">
                                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                        <span class="text-gray-500 sm:text-xs">$</span>
+                                        <span class="text-gray-500 dark:text-gray-400 sm:text-xs">$</span>
                                     </div>
-                                    <input type="number" id="downPayment" class="mortgage-calc-input block w-full rounded-md border-indigo-200 pl-7 focus:border-indigo-500 focus:ring-indigo-500 py-2 text-sm" step="0.01" placeholder="60000">
+                                    <input type="text" inputmode="numeric" id="downPayment" class="formatted-input mortgage-calc-input block w-full rounded-md border-indigo-200 dark:border-indigo-800 pl-7 focus:border-indigo-500 focus:ring-indigo-500 py-2 text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="60,000">
                                 </div>
-                                <p id="downPaymentNote" class="text-[10px] mt-1 text-indigo-800 min-h-[1.25rem]"></p>
+                                <p id="downPaymentNote" class="text-[10px] mt-1 text-indigo-800 dark:text-indigo-300 min-h-[1.25rem]"></p>
                             </div>
                             <div>
-                                <label for="interestRate" class="block text-xs font-medium text-indigo-800">Interest Rate (%)</label>
-                                <input type="number" id="interestRate" class="mortgage-calc-input block w-full rounded-md border-indigo-200 focus:border-indigo-500 focus:ring-indigo-500 py-2 text-sm" placeholder="6.5" step="0.01">
+                                <label for="interestRate" class="block text-xs font-medium text-indigo-800 dark:text-indigo-200">Interest Rate (%)</label>
+                                <input type="number" id="interestRate" class="mortgage-calc-input block w-full rounded-md border-indigo-200 dark:border-indigo-800 focus:border-indigo-500 focus:ring-indigo-500 py-2 px-3 text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="6.5" step="0.01">
                             </div>
                             <div>
-                                <label for="loanTerm" class="block text-xs font-medium text-indigo-800">Term (Years)</label>
-                                <select id="loanTerm" class="mortgage-calc-input block w-full rounded-md border-indigo-200 focus:border-indigo-500 focus:ring-indigo-500 py-2 text-sm">
+                                <label for="loanTerm" class="block text-xs font-medium text-indigo-800 dark:text-indigo-200">Term (Years)</label>
+                                <select id="loanTerm" class="mortgage-calc-input block w-full rounded-md border-indigo-200 dark:border-indigo-800 focus:border-indigo-500 focus:ring-indigo-500 py-2 text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
                                     <option value="30" selected>30 Years</option>
                                     <option value="15">15 Years</option>
                                     <option value="20">20 Years</option>
@@ -221,81 +261,77 @@
                                 </select>
                             </div>
                             <div class="col-span-1 md:col-span-2">
-                                <label for="taxLocation" class="block text-xs font-medium text-indigo-800">Property Tax Estimation</label>
-                                <select id="taxLocation" class="block w-full rounded-md border-indigo-200 focus:border-indigo-500 focus:ring-indigo-500 py-2 text-sm mt-1">
+                                <label for="taxLocation" class="block text-xs font-medium text-indigo-800 dark:text-indigo-200">Property Tax Estimation</label>
+                                <select id="taxLocation" class="block w-full rounded-md border-indigo-200 dark:border-indigo-800 focus:border-indigo-500 focus:ring-indigo-500 py-2 text-sm mt-1 bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
                                     <option value="custom">Manual Entry / Other</option>
                                     <option value="alabama">Alabama Counties Avg (0.35%)</option>
                                 </select>
                             </div>
 
-                            <!-- Moved Inputs -->
                             <div>
-                                <label for="propertyTax" class="block text-xs font-medium text-indigo-800">Property Taxes (Monthly)</label>
+                                <label for="propertyTax" class="block text-xs font-medium text-indigo-800 dark:text-indigo-200">Property Taxes (Monthly)</label>
                                 <div class="mt-1 relative rounded-md shadow-sm">
                                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                        <span class="text-gray-500 sm:text-xs">$</span>
+                                        <span class="text-gray-500 dark:text-gray-400 sm:text-xs">$</span>
                                     </div>
-                                    <input type="number" id="propertyTax" class="mortgage-calc-input block w-full rounded-md border-indigo-200 pl-7 focus:border-indigo-500 focus:ring-indigo-500 py-2 text-sm" placeholder="0.00" step="0.01">
+                                    <input type="text" inputmode="decimal" id="propertyTax" class="formatted-input mortgage-calc-input block w-full rounded-md border-indigo-200 dark:border-indigo-800 pl-7 focus:border-indigo-500 focus:ring-indigo-500 py-2 text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="0.00">
                                 </div>
                             </div>
                             <div>
-                                <label for="homeInsurance" class="block text-xs font-medium text-indigo-800">Homeowners Insurance (Annual)</label>
+                                <label for="homeInsurance" class="block text-xs font-medium text-indigo-800 dark:text-indigo-200">Homeowners Insurance (Annual)</label>
                                 <div class="mt-1 relative rounded-md shadow-sm">
                                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                        <span class="text-gray-500 sm:text-xs">$</span>
+                                        <span class="text-gray-500 dark:text-gray-400 sm:text-xs">$</span>
                                     </div>
-                                    <input type="number" id="homeInsurance" class="mortgage-calc-input block w-full rounded-md border-indigo-200 pl-7 focus:border-indigo-500 focus:ring-indigo-500 py-2 text-sm" placeholder="0.00" step="0.01">
+                                    <input type="text" inputmode="decimal" id="homeInsurance" class="formatted-input mortgage-calc-input block w-full rounded-md border-indigo-200 dark:border-indigo-800 pl-7 focus:border-indigo-500 focus:ring-indigo-500 py-2 text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="0.00">
                                 </div>
                             </div>
 
                         </div>
-                        <div class="mt-4 pt-4 border-t border-indigo-200 flex justify-between items-center">
-                            <span class="text-sm font-semibold text-indigo-900">Est. Monthly Payment (PITI):</span>
-                            <span id="estimatedMortgageDisplay" class="text-xl font-bold text-indigo-700">$0.00</span>
+                        <div class="mt-4 pt-4 border-t border-indigo-200 dark:border-indigo-900 flex justify-between items-center">
+                            <span class="text-sm font-semibold text-indigo-900 dark:text-indigo-300">Est. Monthly Payment (PITI):</span>
+                            <span id="estimatedMortgageDisplay" class="text-xl font-bold text-indigo-700 dark:text-indigo-300">$0.00</span>
                         </div>
                     </div>
 
-                    <!-- Direct Housing Inputs -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="col-span-1 md:col-span-2">
-                             <label for="mortgagePayment" class="block text-sm font-medium text-slate-700">Principal & Interest <span class="text-xs text-gray-500 font-normal">(Auto-filled from estimator)</span></label>
+                             <label for="mortgagePayment" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Principal & Interest <span class="text-xs text-gray-500 dark:text-gray-400 font-normal">(Auto-filled from estimator)</span></label>
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                    <span class="text-gray-500 dark:text-gray-400 sm:text-sm">$</span>
                                 </div>
-                                <input type="number" id="mortgagePayment" class="housing-input block w-full rounded-md border-gray-300 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border bg-gray-50 text-slate-500" placeholder="0.00" step="0.01">
+                                <input type="text" inputmode="decimal" id="mortgagePayment" class="formatted-input housing-input block w-full rounded-md border-gray-300 dark:border-slate-700 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border bg-gray-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400" placeholder="0.00">
                             </div>
                         </div>
 
                         <div>
-                            <label for="hoaFees" class="block text-sm font-medium text-slate-700">HOA Fees</label>
+                            <label for="hoaFees" class="block text-sm font-medium text-slate-700 dark:text-slate-300">HOA Fees</label>
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                    <span class="text-gray-500 dark:text-gray-400 sm:text-sm">$</span>
                                 </div>
-                                <input type="number" id="hoaFees" class="housing-input block w-full rounded-md border-gray-300 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border" placeholder="0.00" step="0.01">
+                                <input type="text" inputmode="decimal" id="hoaFees" class="formatted-input housing-input block w-full rounded-md border-gray-300 dark:border-slate-700 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="0.00">
                             </div>
                         </div>
                         <div>
-                            <label for="maintenance" class="block text-sm font-medium text-slate-700">Maintenance / Repairs</label>
+                            <label for="maintenance" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Maintenance / Repairs</label>
                             <div class="mt-1 relative rounded-md shadow-sm">
                                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                    <span class="text-gray-500 dark:text-gray-400 sm:text-sm">$</span>
                                 </div>
                                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                    <span class="text-gray-400 text-xs">Est.</span>
+                                    <span class="text-gray-400 dark:text-gray-500 text-xs">Est.</span>
                                 </div>
-                                <input type="number" id="maintenance" class="housing-input block w-full rounded-md border-gray-300 pl-7 pr-10 focus:border-blue-500 focus:ring-blue-500 py-2 border" placeholder="0.00" step="0.01">
+                                <input type="text" inputmode="decimal" id="maintenance" class="formatted-input housing-input block w-full rounded-md border-gray-300 dark:border-slate-700 pl-7 pr-10 focus:border-blue-500 focus:ring-blue-500 py-2 border bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="0.00">
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Dynamic Other Housing -->
                     <div id="otherHousingContainer" class="space-y-3 mt-4">
-                        <!-- Dynamic items -->
-                    </div>
+                        </div>
                     
-                    <button type="button" id="addHousingBtn" class="mt-4 inline-flex items-center text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
+                    <button type="button" id="addHousingBtn" class="mt-4 inline-flex items-center text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
@@ -303,60 +339,49 @@
                     </button>
                 </section>
 
-                <button id="calculateBtn" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 px-6 rounded-xl shadow-lg transform transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 text-lg">
+                <button id="calculateBtn" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 px-6 rounded-xl shadow-lg transform transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-slate-900 text-lg">
                     Calculate Affordability
                 </button>
 
-                <!-- Save Scenario Section (Bottom of Inputs) -->
-                <div class="pt-6 border-t border-gray-200">
-                    <h3 class="text-md font-medium text-gray-900 mb-3">Save Calculation</h3>
+                <div class="pt-6 border-t border-gray-200 dark:border-slate-800">
+                    <h3 class="text-md font-medium text-gray-900 dark:text-white mb-3">Save Calculation</h3>
                     <div class="flex flex-col gap-3">
-                        <input type="text" id="scenarioName" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-2.5 px-3 border text-sm" placeholder="Scenario Name (e.g., 300k House)">
+                        <input type="text" id="scenarioName" class="block w-full rounded-md border-gray-300 dark:border-slate-700 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-2.5 px-3 border text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="Scenario Name (e.g., 300k House)">
                         <div class="flex gap-2">
-                            <button id="saveNewScenarioBtn" class="flex-1 bg-gray-800 text-white px-4 py-2.5 rounded-md text-sm font-medium hover:bg-gray-700 shadow-sm transition-colors flex justify-center items-center gap-2">
+                            <button id="saveNewScenarioBtn" class="flex-1 bg-gray-800 dark:bg-slate-700 text-white px-4 py-2.5 rounded-md text-sm font-medium hover:bg-gray-700 dark:hover:bg-slate-600 shadow-sm transition-colors flex justify-center items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                 </svg>
                                 Save New Scenario
                             </button>
-                            <button id="saveCurrentScenarioBtn" class="flex-1 bg-white text-gray-700 border border-gray-300 px-4 py-2.5 rounded-md text-sm font-medium hover:bg-gray-50 shadow-sm transition-colors flex justify-center items-center gap-2">
+                            <button id="saveCurrentScenarioBtn" class="flex-1 bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-slate-600 px-4 py-2.5 rounded-md text-sm font-medium hover:bg-gray-50 dark:hover:bg-slate-700 shadow-sm transition-colors flex justify-center items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
                                 </svg>
                                 Save Current
                             </button>
                         </div>
-                        <button id="clearCalcBtn" class="w-full mt-2 bg-red-50 text-red-600 border border-red-100 px-4 py-2 rounded-md text-sm font-medium hover:bg-red-100 shadow-sm transition-colors flex justify-center items-center gap-2">
+                        <button id="clearCalcBtn" class="w-full mt-2 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-900/30 px-4 py-2 rounded-md text-sm font-medium hover:bg-red-100 dark:hover:bg-red-900/30 shadow-sm transition-colors flex justify-center items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                             </svg>
                             Clear Calculation
                         </button>
                     </div>
-                    <p class="text-xs text-gray-500 mt-2">Saves directly to your browser. Load a scenario to update it.</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Saves directly to your browser. Load a scenario to update it.</p>
                 </div>
 
             </div>
 
-            <!-- Results Section -->
             <div class="lg:col-span-5">
                 <div class="lg:sticky lg:top-8 space-y-6">
                     
-                    <!-- Saved Scenarios List (Top of Results) -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                        <h3 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-blue-600">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-                            </svg>
-                            Saved Scenarios
-                        </h3>
-                        <div id="scenarioList" class="space-y-2 max-h-60 overflow-y-auto no-scrollbar pr-1">
-                            <p class="text-sm text-gray-400 text-center italic py-2">No saved scenarios</p>
-                        </div>
+                    <div id="activeScenarioDisplay" class="hidden flex items-center gap-2 px-1 animate-fadeIn">
+                        <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Active Scenario:</span>
+                        <span id="activeScenarioNameDisplay" class="text-sm font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-full border border-blue-100 dark:border-blue-800"></span>
                     </div>
 
-                    <!-- Summary Card -->
-                    <div id="summaryCard" class="bg-slate-900 text-white rounded-xl shadow-xl overflow-hidden border border-slate-800">
+                    <div id="summaryCard" class="bg-slate-900 dark:bg-gray-900 text-white rounded-xl shadow-xl overflow-hidden border border-slate-800 dark:border-gray-800">
                         <div class="p-6">
                             <h3 class="text-lg font-medium text-slate-300 uppercase tracking-wider mb-1">Monthly Summary</h3>
                             <div class="mt-6 space-y-6">
@@ -368,60 +393,73 @@
                                     <p class="text-sm text-slate-400">Total Monthly Expenses</p>
                                     <p id="resTotalExpenses" class="text-3xl font-bold tracking-tight text-red-300">$0.00</p>
                                 </div>
-                                <div class="pt-4 border-t border-slate-700">
+                                <div class="pt-4 border-t border-slate-700 dark:border-gray-800">
                                     <p class="text-sm text-slate-400">Money Left Over</p>
                                     <p id="resLeftOver" class="text-5xl font-extrabold text-green-400">$0.00</p>
                                 </div>
+
+                                <div id="annualStats" class="hidden pt-4 border-t border-slate-700 dark:border-gray-800 space-y-3 animate-fadeIn">
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <p class="text-xs text-slate-400">Annual Income</p>
+                                            <p id="resAnnualIncome" class="text-lg font-semibold text-white">$0.00</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs text-slate-400">Annual Expenses</p>
+                                            <p id="resAnnualExpenses" class="text-lg font-semibold text-red-300">$0.00</p>
+                                        </div>
+                                        <div class="col-span-2">
+                                            <p class="text-xs text-slate-400">Annual Left Over</p>
+                                            <p id="resAnnualLeftOver" class="text-xl font-bold text-green-400">$0.00</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="bg-slate-800 px-6 py-4">
+                        <div class="bg-slate-800 dark:bg-gray-800 px-6 py-4">
                              <div class="flex justify-between items-center">
                                 <span class="text-sm text-slate-300">Left Over %</span>
                                 <span id="resLeftOverPct" class="text-xl font-bold text-green-400">0%</span>
                              </div>
-                             <div class="w-full bg-slate-700 rounded-full h-2.5 mt-2">
+                             <div class="w-full bg-slate-700 dark:bg-gray-700 rounded-full h-2.5 mt-2">
                                 <div id="leftOverBar" class="bg-green-500 h-2.5 rounded-full transition-all duration-1000" style="width: 0%"></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Breakdown Card -->
-                    <div id="breakdownCard" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 opacity-50 pointer-events-none transition-opacity duration-300">
-                        <h3 class="text-lg font-semibold text-slate-900 mb-4">Expense Breakdown</h3>
+                    <div id="breakdownCard" class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-200 dark:border-slate-800 p-6 opacity-50 pointer-events-none transition-all duration-300">
+                        <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Expense Breakdown</h3>
                         
                         <div class="space-y-5">
-                            <!-- Housing -->
                             <div>
                                 <div class="flex justify-between mb-1">
-                                    <span class="text-sm font-medium text-slate-700">Housing Costs</span>
-                                    <span class="text-sm font-medium text-slate-900" id="resHousingVal">$0.00</span>
+                                    <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Housing Costs</span>
+                                    <span class="text-sm font-medium text-slate-900 dark:text-white" id="resHousingVal">$0.00</span>
                                 </div>
-                                <div class="w-full bg-gray-200 rounded-full h-2">
-                                    <div id="housingBar" class="bg-indigo-600 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div id="housingBar" class="bg-indigo-600 dark:bg-indigo-500 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
                                 </div>
                                 <div class="flex justify-end mt-1">
-                                    <span class="text-xs text-gray-500" id="resHousingPct">0% of income</span>
+                                    <span class="text-xs text-gray-500 dark:text-gray-400" id="resHousingPct">0% of income</span>
                                 </div>
                             </div>
 
-                            <!-- Non-Housing -->
                             <div>
                                 <div class="flex justify-between mb-1">
-                                    <span class="text-sm font-medium text-slate-700">Non-Housing Expenses</span>
-                                    <span class="text-sm font-medium text-slate-900" id="resNonHousingVal">$0.00</span>
+                                    <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Non-Housing Expenses</span>
+                                    <span class="text-sm font-medium text-slate-900 dark:text-white" id="resNonHousingVal">$0.00</span>
                                 </div>
-                                <div class="w-full bg-gray-200 rounded-full h-2">
-                                    <div id="nonHousingBar" class="bg-orange-500 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div id="nonHousingBar" class="bg-orange-500 dark:bg-orange-400 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
                                 </div>
                                 <div class="flex justify-end mt-1">
-                                    <span class="text-xs text-gray-500" id="resNonHousingPct">0% of income</span>
+                                    <span class="text-xs text-gray-500 dark:text-gray-400" id="resNonHousingPct">0% of income</span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Warning Message Container -->
                         <div id="warningContainer" class="mt-6 hidden">
-                            <div class="bg-red-50 border-l-4 border-red-400 p-4">
+                            <div class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-400 p-4">
                                 <div class="flex">
                                     <div class="flex-shrink-0">
                                         <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -429,7 +467,7 @@
                                         </svg>
                                     </div>
                                     <div class="ml-3">
-                                        <p class="text-sm text-red-700" id="warningMessage">
+                                        <p class="text-sm text-red-700 dark:text-red-300" id="warningMessage">
                                             Expenses exceed income!
                                         </p>
                                     </div>
@@ -439,52 +477,77 @@
 
                     </div>
 
-                    <!-- Net Worth Card -->
-                    <div id="netWorthCard" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                        <h3 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-emerald-600">
+                    <div id="netWorthCard" class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-200 dark:border-slate-800 p-6 transition-all duration-200">
+                        <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-emerald-600 dark:text-emerald-500">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
                             </svg>
                             Net Worth Tracker
                         </h3>
                         
-                        <div class="mb-6 text-center p-4 bg-emerald-50 rounded-lg border border-emerald-100">
-                            <p class="text-sm text-emerald-800 font-medium uppercase tracking-wide">Total Net Worth</p>
-                            <p id="totalNetWorth" class="text-4xl font-extrabold text-emerald-700 mt-1">$0.00</p>
+                        <div class="mb-6 text-center p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-100 dark:border-emerald-900/30 relative overflow-hidden">
+                            <p class="text-sm text-emerald-800 dark:text-emerald-300 font-medium uppercase tracking-wide">Total Net Worth</p>
+                            <p id="totalNetWorth" class="text-4xl font-extrabold text-emerald-700 dark:text-emerald-400 mt-1 transition-all duration-300">$0.00</p>
+                            <p id="subtractedAmountDisplay" class="hidden text-xs text-red-500 dark:text-red-400 mt-1 animate-fadeIn font-medium"></p>
                         </div>
 
-                        <div class="space-y-4">
-                            <div>
-                                <label for="netWorthJed" class="block text-sm font-medium text-slate-700">Jed's Account</label>
-                                <div class="mt-1 relative rounded-md shadow-sm">
-                                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                        <span class="text-gray-500 sm:text-sm">$</span>
+                        <div class="space-y-6">
+                            <div class="space-y-4">
+                                <h4 class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider border-b border-gray-100 dark:border-slate-800 pb-2">Assets (Money You Have)</h4>
+                                <div>
+                                    <label for="netWorthJed" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Jed's Account</label>
+                                    <div class="mt-1 relative rounded-md shadow-sm">
+                                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                            <span class="text-gray-500 dark:text-gray-400 sm:text-sm">$</span>
+                                        </div>
+                                        <input type="text" inputmode="decimal" id="netWorthJed" class="formatted-input net-worth-input block w-full rounded-md border-gray-300 dark:border-slate-700 pl-7 focus:border-emerald-500 focus:ring-emerald-500 py-2 border bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="0.00">
                                     </div>
-                                    <input type="number" id="netWorthJed" class="net-worth-input block w-full rounded-md border-gray-300 pl-7 focus:border-emerald-500 focus:ring-emerald-500 py-2 border" placeholder="0.00" step="0.01">
                                 </div>
-                            </div>
-                            <div>
-                                <label for="netWorthOlivia" class="block text-sm font-medium text-slate-700">Olivia's Account</label>
-                                <div class="mt-1 relative rounded-md shadow-sm">
-                                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                        <span class="text-gray-500 sm:text-sm">$</span>
+                                <div>
+                                    <label for="netWorthOlivia" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Olivia's Account</label>
+                                    <div class="mt-1 relative rounded-md shadow-sm">
+                                        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                            <span class="text-gray-500 dark:text-gray-400 sm:text-sm">$</span>
+                                        </div>
+                                        <input type="text" inputmode="decimal" id="netWorthOlivia" class="formatted-input net-worth-input block w-full rounded-md border-gray-300 dark:border-slate-700 pl-7 focus:border-emerald-500 focus:ring-emerald-500 py-2 border bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="0.00">
                                     </div>
-                                    <input type="number" id="netWorthOlivia" class="net-worth-input block w-full rounded-md border-gray-300 pl-7 focus:border-emerald-500 focus:ring-emerald-500 py-2 border" placeholder="0.00" step="0.01">
                                 </div>
-                            </div>
-                            
-                            <!-- Dynamic Assets -->
-                            <div id="otherAssetsContainer" class="space-y-3"></div>
+                                
+                                <div id="otherAssetsContainer" class="space-y-3"></div>
 
-                            <button type="button" id="addAssetBtn" class="mt-2 inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-800 transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                </svg>
-                                Add other account
-                            </button>
+                                <button type="button" id="addAssetBtn" class="mt-2 inline-flex items-center text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                    </svg>
+                                    Add other account
+                                </button>
+                            </div>
+
+                            <div class="space-y-4 pt-2">
+                                <h4 class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider border-b border-gray-100 dark:border-slate-800 pb-2">Liabilities (Money You Owe)</h4>
+                                
+                                <div id="liabilitiesContainer" class="space-y-3"></div>
+
+                                <button type="button" id="addLiabilityBtn" class="mt-2 inline-flex items-center text-sm font-medium text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                    </svg>
+                                    Add large expense/debt
+                                </button>
+
+                                <div class="mt-4 flex items-center justify-between bg-gray-50 dark:bg-slate-800/50 p-3 rounded-lg border border-gray-100 dark:border-slate-700">
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Apply Down Payment</span>
+                                        <span class="text-xs text-gray-500 dark:text-gray-400">Subtract estimated down payment from total</span>
+                                    </div>
+                                    <button id="toggleDownPaymentBtn" class="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200 dark:bg-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900">
+                                        <span id="downPaymentKnob" class="translate-x-1 inline-block h-4 w-4 transform rounded-full bg-white transition"></span>
+                                    </button>
+                                </div>
+                            </div>
                             
-                            <div class="mt-6 pt-4 border-t border-gray-100">
-                                <button id="clearNetWorthBtn" class="text-xs text-gray-400 hover:text-red-500 transition-colors flex items-center gap-1">
+                            <div class="mt-6 pt-4 border-t border-gray-100 dark:border-slate-800">
+                                <button id="clearNetWorthBtn" class="text-xs text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 transition-colors flex items-center gap-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                                     </svg>
@@ -497,30 +560,228 @@
             </div>
         </div>
     </main>
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js').catch((err) => {
-            console.log('Service worker registration failed:', err);
-          });
-        });
-      }
-    </script>
 
+    <div id="changeLogModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-transparent transition-opacity"></div>
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div class="relative transform overflow-hidden rounded-lg bg-white dark:bg-slate-900 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg border border-gray-200 dark:border-slate-700 ring-1 ring-black/5">
+                    <div class="bg-white dark:bg-slate-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 sm:mx-0 sm:h-10 sm:w-10">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 text-blue-600 dark:text-blue-400">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                                </svg>
+                            </div>
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                                <h3 class="text-base font-semibold leading-6 text-slate-900 dark:text-white" id="modal-title">Change Log</h3>
+                                <div class="mt-2 space-y-4 max-h-64 overflow-y-auto pr-2">
+                                    <div>
+                                        <div class="flex items-center justify-between">
+                                            <p class="text-sm font-bold text-slate-800 dark:text-slate-200">v1.0.4 (Current)</p>
+                                            <span class="text-xs text-slate-500">Today</span>
+                                        </div>
+                                        <ul class="list-disc list-inside mt-1 text-sm text-slate-600 dark:text-slate-400 ml-1 space-y-1">
+                                            <li>Added automatic comma formatting to all money fields (static and dynamic).</li>
+                                        </ul>
+                                    </div>
+                                    <div class="pt-3 border-t border-gray-100 dark:border-slate-800">
+                                        <div class="flex items-center justify-between">
+                                            <p class="text-sm font-bold text-slate-800 dark:text-slate-200">v1.0.3</p>
+                                        </div>
+                                        <ul class="list-disc list-inside mt-1 text-sm text-slate-600 dark:text-slate-400 ml-1 space-y-1">
+                                            <li>Increased size of remove buttons for easier tapping.</li>
+                                            <li>Replaced browser alerts with custom in-app notifications.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="pt-3 border-t border-gray-100 dark:border-slate-800">
+                                        <div class="flex items-center justify-between">
+                                            <p class="text-sm font-bold text-slate-800 dark:text-slate-200">v1.0.2</p>
+                                        </div>
+                                        <ul class="list-disc list-inside mt-1 text-sm text-slate-600 dark:text-slate-400 ml-1 space-y-1">
+                                            <li>Added multiple income streams support.</li>
+                                            <li>Fixed Dark Mode toggle.</li>
+                                            <li>Improved Change Log display.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="pt-3 border-t border-gray-100 dark:border-slate-800">
+                                        <div class="flex items-center justify-between">
+                                            <p class="text-sm font-bold text-slate-800 dark:text-slate-200">v1.0.1</p>
+                                        </div>
+                                        <ul class="list-disc list-inside mt-1 text-sm text-slate-600 dark:text-slate-400 ml-1 space-y-1">
+                                            <li>Active Scenario now displayed above Summary.</li>
+                                            <li>Fixed Annual Total rounding error.</li>
+                                            <li>Refined Dark Mode functionality.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="pt-3 border-t border-gray-100 dark:border-slate-800">
+                                        <div class="flex items-center justify-between">
+                                            <p class="text-sm font-bold text-slate-800 dark:text-slate-200">v1.0.0</p>
+                                        </div>
+                                        <ul class="list-disc list-inside mt-1 text-sm text-slate-600 dark:text-slate-400 ml-1 space-y-1">
+                                            <li>Added Settings Menu with Dark Mode toggle.</li>
+                                            <li>Added "Annual Totals" view in Summary.</li>
+                                            <li>Formatted Home Price & Down Payment with commas.</li>
+                                            <li>Added Version Number to header.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-slate-800/50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                        <button type="button" id="closeChangeLogBtn" class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="appModal" class="relative z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-gray-500/75 dark:bg-slate-900/75 transition-opacity" id="appModalBackdrop"></div>
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div class="relative transform overflow-hidden rounded-lg bg-white dark:bg-slate-900 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg border border-gray-200 dark:border-slate-700">
+                    <div class="bg-white dark:bg-slate-900 px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div id="modalIconContainer" class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 sm:mx-0 sm:h-10 sm:w-10">
+                                </div>
+                            <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
+                                <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white" id="modalTitle">Title</h3>
+                                <div class="mt-2">
+                                    <p class="text-sm text-gray-500 dark:text-gray-400" id="modalMessage">Message</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-slate-800/50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-2" id="modalButtons">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         // --- State ---
         let currentScenarioName = null;
+        let isDarkMode = localStorage.getItem('affordability_darkMode') === 'true';
+        let showAnnual = localStorage.getItem('affordability_showAnnual') === 'true';
+        let applyDownPayment = false; // New state for net worth
 
-        // --- Utilities ---
+        // --- Custom Modal Logic ---
+        const showModal = (title, message, type = 'info', onConfirm = null) => {
+            const modal = document.getElementById('appModal');
+            const titleEl = document.getElementById('modalTitle');
+            const msgEl = document.getElementById('modalMessage');
+            const iconContainer = document.getElementById('modalIconContainer');
+            const btnContainer = document.getElementById('modalButtons');
+            
+            titleEl.innerText = title;
+            msgEl.innerText = message;
+            
+            // Icon Setup
+            let iconHtml = '';
+            if(type === 'danger') {
+                iconContainer.className = "mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 sm:mx-0 sm:h-10 sm:w-10";
+                iconHtml = `<svg class="h-6 w-6 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.008v.008H12v-.008z" /></svg>`;
+            } else {
+                iconContainer.className = "mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 sm:mx-0 sm:h-10 sm:w-10";
+                iconHtml = `<svg class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>`;
+            }
+            iconContainer.innerHTML = iconHtml;
+
+            // Buttons Setup
+            btnContainer.innerHTML = '';
+            if (onConfirm) {
+                // Confirm Modal
+                const confirmBtn = document.createElement('button');
+                confirmBtn.className = `inline-flex w-full justify-center rounded-md ${type === 'danger' ? 'bg-red-600 hover:bg-red-500' : 'bg-blue-600 hover:bg-blue-500'} px-3 py-2 text-sm font-semibold text-white shadow-sm sm:ml-3 sm:w-auto transition-colors`;
+                confirmBtn.innerText = type === 'danger' ? 'Delete' : 'Confirm'; 
+                if(type === 'danger' && title.includes('Clear')) confirmBtn.innerText = 'Clear All';
+                if(type === 'danger' && title.includes('Delete')) confirmBtn.innerText = 'Delete';
+                if(title.includes('Overwrite')) confirmBtn.innerText = 'Overwrite';
+                
+                confirmBtn.onclick = () => {
+                    onConfirm();
+                    modal.classList.add('hidden');
+                };
+                
+                const cancelBtn = document.createElement('button');
+                cancelBtn.className = "mt-3 inline-flex w-full justify-center rounded-md bg-white dark:bg-slate-800 px-3 py-2 text-sm font-semibold text-gray-900 dark:text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 sm:mt-0 sm:w-auto transition-colors";
+                cancelBtn.innerText = 'Cancel';
+                cancelBtn.onclick = () => modal.classList.add('hidden');
+                
+                btnContainer.appendChild(confirmBtn);
+                btnContainer.appendChild(cancelBtn);
+            } else {
+                // Alert/Info Modal
+                const okBtn = document.createElement('button');
+                okBtn.className = "inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto transition-colors";
+                okBtn.innerText = 'OK';
+                okBtn.onclick = () => modal.classList.add('hidden');
+                btnContainer.appendChild(okBtn);
+            }
+
+            modal.classList.remove('hidden');
+        };
+
+        // --- Formatting Utilities ---
         const formatCurrency = (num) => {
             return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num);
         };
 
-        const parseInput = (id) => {
-            const val = parseFloat(document.getElementById(id).value);
-            return isNaN(val) ? 0 : val;
+        const formatNumber = (num) => {
+            return new Intl.NumberFormat('en-US').format(num);
         };
+
+        const parseRawValue = (val) => {
+            if (!val) return 0;
+            const clean = val.toString().replace(/,/g, '');
+            const num = parseFloat(clean);
+            return isNaN(num) ? 0 : num;
+        };
+
+        const parseInput = (id) => {
+            const el = document.getElementById(id);
+            if (!el) return 0;
+            return parseRawValue(el.value);
+        };
+
+        // Helper to match user expectation: round to 2 decimals
+        const roundMoney = (num) => Math.round(num * 100) / 100;
+
+        // --- Input Formatting Logic (Comma Separation) ---
+        const attachFormatListeners = (input) => {
+            // Format on Blur
+            input.addEventListener('blur', (e) => {
+                const val = e.target.value.replace(/,/g, '');
+                if (val && !isNaN(val)) {
+                    e.target.value = formatNumber(val);
+                }
+            });
+
+            // Unformat on Focus (to allow editing)
+            input.addEventListener('focus', (e) => {
+                const val = e.target.value.replace(/,/g, '');
+                if (val && !isNaN(val)) {
+                    e.target.value = val; // Show raw number
+                }
+            });
+            
+            // Initial Format if value exists
+            if(input.value) {
+                const val = input.value.replace(/,/g, '');
+                if(val && !isNaN(val)) input.value = formatNumber(val);
+            }
+        };
+
+        const setupFormattedInputs = () => {
+            const inputs = document.querySelectorAll('.formatted-input');
+            inputs.forEach(input => {
+                attachFormatListeners(input);
+            });
+        };
+        setupFormattedInputs();
 
         const createDynamicInput = (containerId, placeholderText, onRemove) => {
             const container = document.getElementById(containerId);
@@ -528,21 +789,25 @@
             div.className = 'flex items-center gap-2 fade-in';
             div.innerHTML = `
                 <div class="relative rounded-md shadow-sm flex-grow">
-                    <input type="text" class="block w-full rounded-md border-gray-300 focus:border-blue-500 focus:ring-blue-500 py-2 px-3 border text-sm" placeholder="${placeholderText || 'Label'}">
+                    <input type="text" class="block w-full rounded-md border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500 py-2 px-3 border text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="${placeholderText || 'Label'}">
                 </div>
                 <div class="relative rounded-md shadow-sm w-1/3">
                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                        <span class="text-gray-500 sm:text-sm">$</span>
+                        <span class="text-gray-500 dark:text-gray-400 sm:text-sm">$</span>
                     </div>
-                    <input type="number" step="0.01" class="dynamic-amount block w-full rounded-md border-gray-300 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border text-sm" placeholder="0">
+                    <input type="text" inputmode="decimal" class="formatted-input dynamic-amount block w-full rounded-md border-gray-300 dark:border-slate-700 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2 border text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="0">
                 </div>
-                <button type="button" class="text-red-400 hover:text-red-600 p-2 remove-btn transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                <button type="button" class="text-red-400 hover:text-red-600 dark:hover:text-red-400 p-3 sm:p-4 remove-btn transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             `;
             
+            // Attach listener to new input
+            const newInput = div.querySelector('.dynamic-amount');
+            attachFormatListeners(newInput);
+
             div.querySelector('.remove-btn').addEventListener('click', () => {
                 div.remove();
                 if(onRemove) onRemove();
@@ -551,6 +816,133 @@
             container.appendChild(div);
             return div;
         };
+
+        // --- Settings & UI Logic ---
+        
+        // Dark Mode
+        const applyDarkMode = () => {
+            const knob = document.getElementById('darkModeKnob');
+            const btn = document.getElementById('toggleDarkModeBtn');
+            if (isDarkMode) {
+                document.documentElement.classList.add('dark');
+                document.body.classList.add('dark');
+                knob.classList.add('translate-x-6');
+                knob.classList.remove('translate-x-1');
+                btn.classList.add('bg-blue-600');
+                btn.classList.remove('bg-gray-200');
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.body.classList.remove('dark');
+                knob.classList.remove('translate-x-6');
+                knob.classList.add('translate-x-1');
+                btn.classList.remove('bg-blue-600');
+                btn.classList.add('bg-gray-200');
+            }
+            localStorage.setItem('affordability_darkMode', isDarkMode);
+        };
+
+        document.getElementById('toggleDarkModeBtn').addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent dropdown close
+            isDarkMode = !isDarkMode;
+            applyDarkMode();
+        });
+
+        // Annual Totals
+        const applyAnnualSettings = () => {
+            const knob = document.getElementById('annualKnob');
+            const btn = document.getElementById('toggleAnnualBtn');
+            const section = document.getElementById('annualStats');
+            
+            if (showAnnual) {
+                section.classList.remove('hidden');
+                knob.classList.add('translate-x-6');
+                knob.classList.remove('translate-x-1');
+                btn.classList.add('bg-blue-600');
+                btn.classList.remove('bg-gray-200');
+            } else {
+                section.classList.add('hidden');
+                knob.classList.remove('translate-x-6');
+                knob.classList.add('translate-x-1');
+                btn.classList.remove('bg-blue-600');
+                btn.classList.add('bg-gray-200');
+            }
+            localStorage.setItem('affordability_showAnnual', showAnnual);
+        };
+
+        document.getElementById('toggleAnnualBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            showAnnual = !showAnnual;
+            applyAnnualSettings();
+        });
+
+        // Initialize Settings
+        applyDarkMode();
+        applyAnnualSettings();
+
+        // Change Log Modal
+        const modal = document.getElementById('changeLogModal');
+        const openModalBtn = document.getElementById('changeLogBtn');
+        const closeModalBtn = document.getElementById('closeChangeLogBtn');
+
+        openModalBtn.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+            // Close dropdown
+            document.getElementById('settingsDropdown').classList.add('hidden');
+        });
+        closeModalBtn.addEventListener('click', () => modal.classList.add('hidden'));
+        modal.addEventListener('click', (e) => {
+            if(e.target === modal.querySelector('div.fixed.inset-0.bg-gray-500')) {
+                modal.classList.add('hidden');
+            }
+        });
+
+
+        // --- Dynamic Income Logic ---
+        const createIncomeInput = (labelVal, amountVal) => {
+            const container = document.getElementById('incomeContainer');
+            const div = document.createElement('div');
+            div.className = 'flex items-center gap-2 fade-in group';
+            
+            div.innerHTML = `
+                <div class="relative rounded-md shadow-sm flex-grow">
+                    <input type="text" class="income-label block w-full rounded-md border-gray-300 dark:border-slate-700 focus:border-blue-500 focus:ring-blue-500 py-2.5 px-3 border text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="Income Source (e.g. Salary)" value="${labelVal || ''}">
+                </div>
+                <div class="relative rounded-md shadow-sm w-1/3">
+                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                        <span class="text-gray-500 dark:text-gray-400 sm:text-sm">$</span>
+                    </div>
+                    <input type="text" inputmode="decimal" class="formatted-input income-amount block w-full rounded-md border-gray-300 dark:border-slate-700 pl-7 focus:border-blue-500 focus:ring-blue-500 py-2.5 border text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="0.00" value="${amountVal || ''}">
+                </div>
+                <button type="button" class="text-red-400 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 hover:text-red-600 dark:hover:text-red-400 p-3 sm:p-4 remove-income-btn transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            `;
+            
+            const newInput = div.querySelector('.income-amount');
+            attachFormatListeners(newInput);
+            // Manually format initial value if present (populateFormData passes raw numbers)
+            if(amountVal) newInput.value = formatNumber(amountVal);
+
+            div.querySelector('.remove-income-btn').addEventListener('click', () => {
+                div.remove();
+                // If all removed, add one empty one?
+                if(container.children.length === 0) {
+                    createIncomeInput('Primary Income', '');
+                }
+            });
+
+            container.appendChild(div);
+            return div;
+        };
+
+        // Init Income
+        createIncomeInput('Primary Income', '');
+
+        document.getElementById('addIncomeBtn').addEventListener('click', () => {
+            createIncomeInput('Side Income', '');
+        });
 
         // --- Event Listeners for Dynamic Fields ---
         document.getElementById('addExpenseBtn').addEventListener('click', () => {
@@ -595,7 +987,7 @@
                 const monthlyTax = annualTax / 12;
                 // Avoid overwriting if user is actively typing in the tax field
                 if (document.activeElement !== taxInput) {
-                    taxInput.value = monthlyTax.toFixed(2);
+                    taxInput.value = formatNumber(monthlyTax.toFixed(2));
                 }
             }
 
@@ -613,7 +1005,7 @@
             // Update P&I Input (used for final detailed breakdown)
             if (monthlyPI > 0) {
                 // Only update if calculated value is valid
-                pAndIInput.value = monthlyPI.toFixed(2);
+                pAndIInput.value = formatNumber(monthlyPI.toFixed(2));
             } else {
                 if (price > 0 || rate > 0) pAndIInput.value = ''; 
             }
@@ -640,11 +1032,15 @@
         // --- Main Calculation Logic ---
         document.getElementById('calculateBtn').addEventListener('click', () => {
             // 1. Get Income
-            const income = parseInput('grossIncome');
+            let income = 0;
+            document.querySelectorAll('.income-amount').forEach(input => {
+                const val = parseRawValue(input.value);
+                if(!isNaN(val)) income += val;
+            });
             
             // Validation
             if (income <= 0) {
-                alert("Please enter a valid Net Monthly Income greater than zero.");
+                showModal("Input Required", "Please enter a valid Net Monthly Income greater than zero.", "info");
                 return;
             }
 
@@ -656,7 +1052,7 @@
             // 3. Get Dynamic Non-Housing
             const dynamicExpenses = document.querySelectorAll('#otherExpensesContainer .dynamic-amount');
             dynamicExpenses.forEach(input => {
-                const val = parseFloat(input.value);
+                const val = parseRawValue(input.value);
                 if (!isNaN(val)) nonHousingTotal += val;
             });
 
@@ -673,7 +1069,7 @@
             // 5. Get Dynamic Housing Costs
             const dynamicHousing = document.querySelectorAll('#otherHousingContainer .dynamic-amount');
             dynamicHousing.forEach(input => {
-                const val = parseFloat(input.value);
+                const val = parseRawValue(input.value);
                 if (!isNaN(val)) housingTotal += val;
             });
 
@@ -692,6 +1088,16 @@
             document.getElementById('resTotalExpenses').innerText = formatCurrency(totalExpenses);
             const leftOverEl = document.getElementById('resLeftOver');
             leftOverEl.innerText = formatCurrency(leftOver);
+
+            // Annual Stats
+            // Fix: Round monthly totals before annualizing to match displayed monthly values (avoids "4 cents off" error)
+            const annualIncome = roundMoney(income) * 12;
+            const annualExpenses = roundMoney(totalExpenses) * 12;
+            const annualLeftOver = roundMoney(leftOver) * 12;
+
+            document.getElementById('resAnnualIncome').innerText = formatCurrency(annualIncome);
+            document.getElementById('resAnnualExpenses').innerText = formatCurrency(annualExpenses);
+            document.getElementById('resAnnualLeftOver').innerText = formatCurrency(annualLeftOver);
             
             if (leftOver < 0) {
                 leftOverEl.classList.remove('text-green-400');
@@ -738,24 +1144,84 @@
 
         // --- Net Worth Logic ---
         const calculateNetWorth = () => {
-            let total = 0;
-            // Fixed Inputs
-            total += parseInput('netWorthJed');
-            total += parseInput('netWorthOlivia');
+            let assets = 0;
+            let liabilities = 0;
+            let subtractedText = [];
+
+            // 1. Assets
+            assets += parseInput('netWorthJed');
+            assets += parseInput('netWorthOlivia');
             
-            // Dynamic Inputs
             const dynamicAssets = document.querySelectorAll('#otherAssetsContainer .dynamic-amount');
             dynamicAssets.forEach(input => {
-                const val = parseFloat(input.value);
-                if (!isNaN(val)) total += val;
+                const val = parseRawValue(input.value);
+                if (!isNaN(val)) assets += val;
             });
 
+            // 2. Liabilities
+            const dynamicLiabilities = document.querySelectorAll('#liabilitiesContainer .dynamic-amount');
+            dynamicLiabilities.forEach(input => {
+                const val = parseRawValue(input.value);
+                if (!isNaN(val)) liabilities += val;
+            });
+
+            // 3. Down Payment Deduction
+            let downPayment = 0;
+            if (applyDownPayment) {
+                downPayment = parseInput('downPayment'); // Gets value from housing section
+            }
+
+            // Calculation
+            let total = assets - liabilities - downPayment;
+
+            // Display Updates
             document.getElementById('totalNetWorth').innerText = formatCurrency(total);
+
+            // Subtracted Amount Display
+            const subDisplay = document.getElementById('subtractedAmountDisplay');
+            let subMsg = '';
+            if (liabilities > 0) subMsg += `-${formatCurrency(liabilities)} liabilities`;
+            if (downPayment > 0) {
+                if(subMsg) subMsg += ', ';
+                subMsg += `-${formatCurrency(downPayment)} down payment`;
+            }
+            
+            if (subMsg) {
+                subDisplay.innerText = `(${subMsg})`;
+                subDisplay.classList.remove('hidden');
+            } else {
+                subDisplay.classList.add('hidden');
+            }
         };
+
+        // Toggle Logic for Down Payment
+        const toggleDownPayment = () => {
+            applyDownPayment = !applyDownPayment;
+            const knob = document.getElementById('downPaymentKnob');
+            const btn = document.getElementById('toggleDownPaymentBtn');
+            
+            if (applyDownPayment) {
+                knob.classList.add('translate-x-6');
+                knob.classList.remove('translate-x-1');
+                btn.classList.add('bg-blue-600');
+                btn.classList.remove('bg-gray-200', 'dark:bg-slate-600');
+            } else {
+                knob.classList.remove('translate-x-6');
+                knob.classList.add('translate-x-1');
+                btn.classList.remove('bg-blue-600');
+                btn.classList.add('bg-gray-200', 'dark:bg-slate-600');
+            }
+            calculateNetWorth();
+        };
+
+        document.getElementById('toggleDownPaymentBtn').addEventListener('click', toggleDownPayment);
 
         // Event Listeners for Net Worth
         document.getElementById('netWorthJed').addEventListener('input', calculateNetWorth);
         document.getElementById('netWorthOlivia').addEventListener('input', calculateNetWorth);
+        
+        // Listen to Down Payment input in housing section to auto-update Net Worth if toggle is on
+        document.getElementById('downPayment').addEventListener('input', calculateNetWorth);
         
         document.getElementById('addAssetBtn').addEventListener('click', () => {
             const div = createDynamicInput('otherAssetsContainer', 'Account Name', calculateNetWorth);
@@ -763,20 +1229,41 @@
             input.addEventListener('input', calculateNetWorth);
         });
 
+        document.getElementById('addLiabilityBtn').addEventListener('click', () => {
+            const div = createDynamicInput('liabilitiesContainer', 'Debt Name', calculateNetWorth);
+            const input = div.querySelector('.dynamic-amount');
+            input.addEventListener('input', calculateNetWorth);
+        });
+
         // --- Scenario Manager Logic ---
         const SCENARIO_KEY = 'affordability_scenarios';
+        
+        const updateActiveScenarioUI = () => {
+            const displayEl = document.getElementById('activeScenarioDisplay');
+            const nameEl = document.getElementById('activeScenarioNameDisplay');
+            if (currentScenarioName) {
+                displayEl.classList.remove('hidden');
+                nameEl.innerText = currentScenarioName;
+            } else {
+                displayEl.classList.add('hidden');
+                nameEl.innerText = '';
+            }
+        };
 
         const collectFormData = () => {
             const data = {
                 static: {},
+                incomes: [],
                 dynamicExpenses: [],
                 dynamicHousing: [],
-                dynamicAssets: []
+                dynamicAssets: [],
+                dynamicLiabilities: [],
+                settings: { applyDownPayment }
             };
 
-            // Static inputs
+            // Static inputs (Removed grossIncome)
             const ids = [
-                'grossIncome', 'carPayment', 'insurance', 'groceries', 'utilities', 
+                'carPayment', 'insurance', 'groceries', 'utilities', 
                 'subscriptions', 'debt', 'homePrice', 'downPayment', 'interestRate', 
                 'loanTerm', 'taxLocation', 'propertyTax', 'homeInsurance', 
                 'mortgagePayment', 'hoaFees', 'maintenance',
@@ -784,28 +1271,42 @@
             ];
             ids.forEach(id => {
                 const el = document.getElementById(id);
-                if(el) data.static[id] = el.value;
+                if(el) data.static[id] = parseRawValue(el.value); // Save numbers, not strings
+            });
+
+            // Incomes
+            document.querySelectorAll('#incomeContainer > div').forEach(div => {
+                const label = div.querySelector('.income-label').value;
+                const amount = parseRawValue(div.querySelector('.income-amount').value);
+                data.incomes.push({ label, amount });
             });
 
             // Dynamic Expenses
             document.querySelectorAll('#otherExpensesContainer > div').forEach(div => {
                 const label = div.querySelector('input[type="text"]').value;
-                const amount = div.querySelector('input[type="number"]').value;
+                const amount = parseRawValue(div.querySelector('.dynamic-amount').value);
                 if(label || amount) data.dynamicExpenses.push({ label, amount });
             });
 
             // Dynamic Housing
             document.querySelectorAll('#otherHousingContainer > div').forEach(div => {
                 const label = div.querySelector('input[type="text"]').value;
-                const amount = div.querySelector('input[type="number"]').value;
+                const amount = parseRawValue(div.querySelector('.dynamic-amount').value);
                 if(label || amount) data.dynamicHousing.push({ label, amount });
             });
 
             // Dynamic Assets (Net Worth)
             document.querySelectorAll('#otherAssetsContainer > div').forEach(div => {
                 const label = div.querySelector('input[type="text"]').value;
-                const amount = div.querySelector('input[type="number"]').value;
+                const amount = parseRawValue(div.querySelector('.dynamic-amount').value);
                 if(label || amount) data.dynamicAssets.push({ label, amount });
+            });
+
+            // Dynamic Liabilities (Net Worth)
+            document.querySelectorAll('#liabilitiesContainer > div').forEach(div => {
+                const label = div.querySelector('input[type="text"]').value;
+                const amount = parseRawValue(div.querySelector('.dynamic-amount').value);
+                if(label || amount) data.dynamicLiabilities.push({ label, amount });
             });
 
             return data;
@@ -818,8 +1319,38 @@
             if (data.static) {
                 Object.keys(data.static).forEach(id => {
                     const el = document.getElementById(id);
-                    if(el) el.value = data.static[id];
+                    if(el) {
+                        // Format number back to string with commas for display
+                        el.value = formatNumber(data.static[id]);
+                    }
                 });
+            }
+            
+            // Settings
+            if (data.settings && typeof data.settings.applyDownPayment !== 'undefined') {
+                // Sync Toggle
+                if (applyDownPayment !== data.settings.applyDownPayment) {
+                    toggleDownPayment();
+                }
+            } else if (applyDownPayment) {
+                // If loading a scenario without this setting, default to false
+                toggleDownPayment(); 
+            }
+
+            // Incomes (Handle legacy grossIncome if needed)
+            const incomeContainer = document.getElementById('incomeContainer');
+            incomeContainer.innerHTML = '';
+            
+            if (data.incomes && data.incomes.length > 0) {
+                data.incomes.forEach(item => {
+                    createIncomeInput(item.label, item.amount);
+                });
+            } else if (data.static && data.static.grossIncome) {
+                // Legacy migration
+                createIncomeInput('Primary Income', data.static.grossIncome);
+            } else {
+                // Fallback
+                createIncomeInput('Primary Income', '');
             }
 
             // Dynamic Expenses
@@ -830,7 +1361,7 @@
                     createDynamicInput('otherExpensesContainer', 'Expense Name');
                     const lastDiv = expContainer.lastElementChild;
                     lastDiv.querySelector('input[type="text"]').value = item.label;
-                    lastDiv.querySelector('input[type="number"]').value = item.amount;
+                    lastDiv.querySelector('.dynamic-amount').value = formatNumber(item.amount);
                 });
             }
 
@@ -842,7 +1373,7 @@
                     createDynamicInput('otherHousingContainer', 'Cost Name');
                     const lastDiv = houseContainer.lastElementChild;
                     lastDiv.querySelector('input[type="text"]').value = item.label;
-                    lastDiv.querySelector('input[type="number"]').value = item.amount;
+                    lastDiv.querySelector('.dynamic-amount').value = formatNumber(item.amount);
                 });
             }
 
@@ -857,7 +1388,21 @@
                     input.addEventListener('input', calculateNetWorth);
                     
                     div.querySelector('input[type="text"]').value = item.label;
-                    input.value = item.amount;
+                    input.value = formatNumber(item.amount);
+                });
+            }
+
+            // Dynamic Liabilities
+            const liabilityContainer = document.getElementById('liabilitiesContainer');
+            liabilityContainer.innerHTML = '';
+            if (data.dynamicLiabilities) {
+                data.dynamicLiabilities.forEach(item => {
+                    const div = createDynamicInput('liabilitiesContainer', 'Debt Name', calculateNetWorth);
+                    const input = div.querySelector('.dynamic-amount');
+                    input.addEventListener('input', calculateNetWorth);
+                    
+                    div.querySelector('input[type="text"]').value = item.label;
+                    input.value = formatNumber(item.amount);
                 });
             }
 
@@ -867,6 +1412,37 @@
             document.getElementById('calculateBtn').click();
         };
 
+        // --- Dropdown Logic (Scenarios & Settings) ---
+        const toggleDropdown = (btnId, menuId) => {
+            const btn = document.getElementById(btnId);
+            const menu = document.getElementById(menuId);
+
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // Close others
+                const allMenus = document.querySelectorAll('[id$="Dropdown"]');
+                allMenus.forEach(m => {
+                    if(m.id !== menuId) m.classList.add('hidden');
+                });
+                menu.classList.toggle('hidden');
+            });
+        };
+
+        toggleDropdown('scenariosMenuBtn', 'savedScenariosDropdown');
+        toggleDropdown('settingsMenuBtn', 'settingsDropdown');
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            const dropdowns = ['savedScenariosDropdown', 'settingsDropdown'];
+            dropdowns.forEach(id => {
+                const menu = document.getElementById(id);
+                // simplified check: if click is not inside any header button or menu
+                if (!e.target.closest('header')) {
+                    menu.classList.add('hidden');
+                }
+            });
+        });
+
         const getSavedScenarios = () => {
             const saved = localStorage.getItem(SCENARIO_KEY);
             return saved ? JSON.parse(saved) : {};
@@ -874,30 +1450,33 @@
 
         const renderScenarios = () => {
             const list = document.getElementById('scenarioList');
+            if(!list) return; 
+            
             list.innerHTML = '';
             const scenarios = getSavedScenarios();
             
             if (Object.keys(scenarios).length === 0) {
-                list.innerHTML = '<p class="text-sm text-gray-400 text-center italic py-2">No saved scenarios</p>';
+                list.innerHTML = '<p class="text-sm text-gray-400 text-center italic py-4">No saved scenarios yet.</p>';
                 return;
             }
 
             Object.keys(scenarios).forEach(name => {
                 const div = document.createElement('div');
-                div.className = 'flex items-center justify-between bg-blue-50 p-3 rounded-lg border border-blue-100 hover:bg-blue-100 transition-colors cursor-pointer group';
+                // Updated styling for dropdown item
+                div.className = 'flex items-center justify-between p-2 rounded-md hover:bg-blue-50 dark:hover:bg-slate-700 cursor-pointer transition-colors group';
                 
                 // Highlight active
                 if(currentScenarioName === name) {
-                    div.classList.add('ring-2', 'ring-blue-500', 'bg-blue-100');
+                    div.classList.add('bg-blue-50', 'dark:bg-slate-700', 'border-l-2', 'border-blue-500');
+                } else {
+                    div.classList.add('border-l-2', 'border-transparent');
                 }
 
                 div.innerHTML = `
-                    <span class="text-sm font-medium text-gray-800 truncate flex-grow mr-2">${name}</span>
-                    <div class="flex gap-2">
-                        <button class="delete-btn text-gray-400 hover:text-red-600 p-1 opacity-0 group-hover:opacity-100 transition-opacity" title="Delete">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
-                        </button>
-                    </div>
+                    <span class="text-sm font-medium text-slate-700 dark:text-slate-200 truncate flex-grow mr-2">${name}</span>
+                    <button class="delete-btn text-gray-300 hover:text-red-500 dark:hover:text-red-400 p-2 transition-colors" title="Delete">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
+                    </button>
                 `;
                 
                 // Clicking the row loads the scenario
@@ -908,38 +1487,42 @@
                     currentScenarioName = name;
                     document.getElementById('scenarioName').value = name;
                     populateFormData(scenarios[name]);
+                    updateActiveScenarioUI(); // Update Active Display
                     renderScenarios(); // Re-render to update selection styles
+                    document.getElementById('savedScenariosDropdown').classList.add('hidden'); // Close dropdown
                 };
                 
                 div.onclick = loadAction;
 
                 div.querySelector('.delete-btn').onclick = (e) => {
                     e.stopPropagation(); // Prevent load
-                    if(confirm('Delete scenario "' + name + '"?')) {
+                    showModal('Delete Scenario', 'Are you sure you want to delete scenario "' + name + '"?', 'danger', () => {
                         const s = getSavedScenarios();
                         delete s[name];
                         localStorage.setItem(SCENARIO_KEY, JSON.stringify(s));
                         if(currentScenarioName === name) {
                             currentScenarioName = null;
                             document.getElementById('scenarioName').value = '';
+                            updateActiveScenarioUI();
                         }
                         renderScenarios();
-                    }
+                    });
                 };
                 list.appendChild(div);
             });
         };
 
-        const saveScenario = (name) => {
+        const saveScenario = (name, btnElement) => {
              const scenarios = getSavedScenarios();
              scenarios[name] = collectFormData();
              localStorage.setItem(SCENARIO_KEY, JSON.stringify(scenarios));
              
              currentScenarioName = name; // Set active
+             updateActiveScenarioUI();
              renderScenarios();
              
              // Visual feedback button flash
-             const btn = document.activeElement;
+             const btn = btnElement || document.activeElement;
              if(btn && btn.tagName === 'BUTTON') {
                  const origText = btn.innerHTML;
                  btn.innerHTML = '<span class="text-green-400 flex items-center justify-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg> Saved!</span>';
@@ -947,57 +1530,75 @@
              }
         };
 
-        document.getElementById('saveNewScenarioBtn').addEventListener('click', () => {
+        document.getElementById('saveNewScenarioBtn').addEventListener('click', function() {
             const name = document.getElementById('scenarioName').value.trim();
-            if (!name) return alert('Please enter a scenario name');
-            const scenarios = getSavedScenarios();
-            if (scenarios[name] && !confirm('A scenario named "' + name + '" already exists. Overwrite?')) return;
+            if (!name) return showModal('Input Required', 'Please enter a scenario name', 'info');
             
-            saveScenario(name);
+            const scenarios = getSavedScenarios();
+            if (scenarios[name]) {
+                showModal('Scenario Exists', 'A scenario named "' + name + '" already exists. Overwrite?', 'danger', () => {
+                    saveScenario(name, this);
+                });
+            } else {
+                saveScenario(name, this);
+            }
         });
 
-        document.getElementById('saveCurrentScenarioBtn').addEventListener('click', () => {
+        document.getElementById('saveCurrentScenarioBtn').addEventListener('click', function() {
             if (!currentScenarioName) {
-                return alert('No scenario is currently loaded. Please enter a name and click "Save New Scenario" to create one.');
+                return showModal('No Scenario Loaded', 'No scenario is currently loaded. Please enter a name and click "Save New Scenario" to create one.', 'info');
             }
-            saveScenario(currentScenarioName);
+            saveScenario(currentScenarioName, this);
         });
 
         // --- Clear Functions ---
         document.getElementById('clearCalcBtn').addEventListener('click', () => {
-            if(!confirm("Clear all income, expenses, and housing inputs? Net Worth will be kept.")) return;
-            
-            // Clear inputs except Net Worth
-            const idsToClear = [
-                'grossIncome', 'carPayment', 'insurance', 'groceries', 'utilities', 
-                'subscriptions', 'debt', 'homePrice', 'downPayment', 'interestRate', 
-                'propertyTax', 'homeInsurance', 'mortgagePayment', 'hoaFees', 'maintenance'
-            ];
-            idsToClear.forEach(id => {
-                 const el = document.getElementById(id);
-                 if(el) el.value = '';
-            });
-            
-            // Reset selects
-            document.getElementById('loanTerm').value = '30';
-            document.getElementById('taxLocation').value = 'custom';
-            document.getElementById('downPaymentNote').innerText = '';
+            showModal('Clear Calculation', "Clear all income, expenses, and housing inputs? Net Worth will be kept.", 'danger', () => {
+                // Clear current scenario name
+                currentScenarioName = null;
+                document.getElementById('scenarioName').value = '';
+                updateActiveScenarioUI();
+                renderScenarios();
 
-            // Clear dynamics
-            document.getElementById('otherExpensesContainer').innerHTML = '';
-            document.getElementById('otherHousingContainer').innerHTML = '';
-            
-            // Trigger Calc to zero out results
-            document.getElementById('calculateBtn').click();
+                // Clear inputs except Net Worth
+                const idsToClear = [
+                    'carPayment', 'insurance', 'groceries', 'utilities', 
+                    'subscriptions', 'debt', 'homePrice', 'downPayment', 'interestRate', 
+                    'propertyTax', 'homeInsurance', 'mortgagePayment', 'hoaFees', 'maintenance'
+                ];
+                idsToClear.forEach(id => {
+                     const el = document.getElementById(id);
+                     if(el) el.value = '';
+                });
+                
+                // Reset Income
+                document.getElementById('incomeContainer').innerHTML = '';
+                createIncomeInput('Primary Income', '');
+
+                // Reset selects
+                document.getElementById('loanTerm').value = '30';
+                document.getElementById('taxLocation').value = 'custom';
+                document.getElementById('downPaymentNote').innerText = '';
+
+                // Clear dynamics
+                document.getElementById('otherExpensesContainer').innerHTML = '';
+                document.getElementById('otherHousingContainer').innerHTML = '';
+                
+                // Trigger Calc to zero out results
+                document.getElementById('calculateBtn').click();
+            });
         });
+        
+        // Initial check for active scenario UI
+        updateActiveScenarioUI();
 
         document.getElementById('clearNetWorthBtn').addEventListener('click', () => {
-            if(!confirm("Clear all Net Worth data?")) return;
-            
-            document.getElementById('netWorthJed').value = '';
-            document.getElementById('netWorthOlivia').value = '';
-            document.getElementById('otherAssetsContainer').innerHTML = '';
-            calculateNetWorth();
+            showModal('Clear Net Worth', "Clear all Net Worth data?", 'danger', () => {
+                document.getElementById('netWorthJed').value = '';
+                document.getElementById('netWorthOlivia').value = '';
+                document.getElementById('otherAssetsContainer').innerHTML = '';
+                calculateNetWorth();
+            });
         });
 
         // Init
@@ -1005,4 +1606,3 @@
     </script>
 </body>
 </html>
-
