@@ -1,6 +1,6 @@
 {
-  "name": "Home Affordability Calculator",
-  "short_name": "HomeCalc",
+  "name": "HAC",
+  "short_name": "HAC",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
