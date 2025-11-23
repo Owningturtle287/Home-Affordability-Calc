@@ -1,10 +1,12 @@
-const CACHE_NAME = 'home-affordability-1.0.5.1'; // bump this *every time* you deploy
+const CACHE_NAME = 'hac-1.0.6'; // <-- bump this whenever you ship changes
+
 const ASSETS = [
   './',
   './index.html',
   './manifest.webmanifest',
   './icons/homecalc-icon-32.png',
   './icons/homecalc-icon-192.png',
+  './icons/homecalc-icon-256.png', // new icon you added
   './icons/homecalc-icon-512.png'
 ];
 
@@ -13,7 +15,7 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
   );
 
-  // Immediately activate the new service worker
+  // Make the new SW take over immediately
   self.skipWaiting();
 });
 
@@ -28,12 +30,12 @@ self.addEventListener('activate', (event) => {
     )
   );
 
-  // Take control of all open clients right away
+  // Control all open clients right away
   self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
-  // Network-first for navigation (HTML) so new versions show up
+  // Network-first for navigations so index.html updates
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request).catch(() => caches.match('./index.html'))
@@ -41,7 +43,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Cache-first for everything else (icons, manifest, etc.)
+  // Cache-first for everything else
   event.respondWith(
     caches.match(event.request).then((cached) => cached || fetch(event.request))
   );
