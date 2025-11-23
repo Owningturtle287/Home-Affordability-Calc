@@ -1,4 +1,4 @@
-const CACHE_NAME = 'home-affordability-1.0.6'; // bump this *every time* you deploy
+const CACHE_NAME = 'home-affordability-1.0.5'; // bump this *every time* you deploy
 const ASSETS = [
   './',
   './index.html',
