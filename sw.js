@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hac-1.0.6'; // <-- bump this whenever you ship changes
+const CACHE_NAME = 'hac-1.0.5.1'; // <-- bump this whenever you ship changes
 
 const ASSETS = [
   './',
