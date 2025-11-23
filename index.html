@@ -15,7 +15,6 @@
     <link rel="icon" type="image/png" sizes="48x48" href="icons/homecalc-icon-48.png">
     <link rel="icon" type="image/png" sizes="64x64" href="icons/homecalc-icon-64.png">
 
-    <!-- iOS home screen icon -->
     <link rel="apple-touch-icon" sizes="180x180" href="icons/homecalc-icon-180.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,14 +50,14 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                         </svg>
                     </div>
-                    <div class="flex items-baseline gap-2">
-                        <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight hidden sm:block">Affordability Calculator</h1>
-                        <h1 class="text-lg font-bold text-slate-900 dark:text-white tracking-tight sm:hidden">Affordability</h1>
-                        <span class="text-xs text-slate-400 font-medium">v1.0.4</span>
+                    <div class="flex flex-col">
+                        <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight hidden sm:block leading-tight">Affordability Calculator</h1>
+                        <h1 class="text-lg font-bold text-slate-900 dark:text-white tracking-tight sm:hidden leading-tight">Affordability</h1>
+                        <span class="text-xs text-slate-400 font-medium">v1.0.5</span>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3 mr-2 sm:mr-4">
                     <div class="relative">
                         <button id="scenariosMenuBtn" class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-slate-300 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-slate-600 text-sm font-medium">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-blue-600 dark:text-blue-400">
@@ -585,8 +584,17 @@
                                 <div class="mt-2 space-y-4 max-h-64 overflow-y-auto pr-2">
                                     <div>
                                         <div class="flex items-center justify-between">
-                                            <p class="text-sm font-bold text-slate-800 dark:text-slate-200">v1.0.4 (Current)</p>
+                                            <p class="text-sm font-bold text-slate-800 dark:text-slate-200">v1.0.5 (Current)</p>
                                             <span class="text-xs text-slate-500">Today</span>
+                                        </div>
+                                        <ul class="list-disc list-inside mt-1 text-sm text-slate-600 dark:text-slate-400 ml-1 space-y-1">
+                                            <li>Moved version number under the app title.</li>
+                                            <li>Adjusted header button spacing.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="pt-3 border-t border-gray-100 dark:border-slate-800">
+                                        <div class="flex items-center justify-between">
+                                            <p class="text-sm font-bold text-slate-800 dark:text-slate-200">v1.0.4</p>
                                         </div>
                                         <ul class="list-disc list-inside mt-1 text-sm text-slate-600 dark:text-slate-400 ml-1 space-y-1">
                                             <li>Added automatic comma formatting to all money fields (static and dynamic).</li>
@@ -1613,5 +1621,3 @@
     </script>
 </body>
 </html>
-
-
