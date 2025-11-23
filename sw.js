@@ -1,4 +1,4 @@
-const CACHE_NAME = 'home-affordability-1.0.5.1'; // bump version when you change assets
+const CACHE_NAME = 'home-affordability-1.0.5.2'; // bump version when you change assets
 const ASSETS = [
   './',
   './index.html',
