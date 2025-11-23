@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HAC</title>
+    <title>Home Affordability Calculator</title>
     
     <link rel="manifest" href="manifest.webmanifest">
 
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="HAC">
+    <meta name="apple-mobile-web-app-title" content="Home Affordability Calculator">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -60,13 +60,13 @@
                         </svg>
                     </div>
                     <div class="flex flex-col">
-                        <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight hidden sm:block leading-tight">HAC</h1>
-                        <h1 class="text-lg font-bold text-slate-900 dark:text-white tracking-tight sm:hidden leading-tight">HAC</h1>
-                        <span class="text-xs text-slate-400 font-medium">v1.0.5</span>
+                        <h1 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight hidden sm:block leading-tight">Home Affordability Calculator</h1>
+                        <h1 class="text-lg font-bold text-slate-900 dark:text-white tracking-tight sm:hidden leading-tight">Home Affordability Calculator</h1>
+                        <span class="text-xs text-slate-400 font-medium">v1.0.6</span>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-3 sm:ml-auto mr-0 sm:mr-4">
+                <div class="flex items-center gap-3 sm:ml-auto mr-0 sm:mr-4 self-end sm:self-auto">
                     <div class="relative">
                         <button id="scenariosMenuBtn" class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-slate-300 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-slate-600 text-sm font-medium">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-blue-600 dark:text-blue-400">
@@ -593,12 +593,13 @@
                                 <div class="mt-2 space-y-4 max-h-64 overflow-y-auto pr-2">
                                     <div>
                                         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                                            <p class="text-sm font-bold text-slate-800 dark:text-slate-200">v1.0.5 (Current)</p>
+                                            <p class="text-sm font-bold text-slate-800 dark:text-slate-200">v1.0.6 (Current)</p>
                                             <span class="text-xs text-slate-500">Today</span>
                                         </div>
                                         <ul class="list-disc list-inside mt-1 text-sm text-slate-600 dark:text-slate-400 ml-1 space-y-1">
-                                            <li>Moved version number under the app title.</li>
-                                            <li>Adjusted header button spacing.</li>
+                                            <li>Renamed the app everywhere to &quot;Home Affordability Calculator&quot; for consistent titles on web, Android, and iOS.</li>
+                                            <li>Moved the Saved Scenarios dropdown and Settings button to the right side of the header.</li>
+                                            <li>Improved mobile layout by stacking the header on small screens and widening money amount fields in dynamic rows.</li>
                                         </ul>
                                     </div>
                                     <div class="pt-3 border-t border-gray-100 dark:border-slate-800">
@@ -1639,5 +1640,3 @@
     </script>
 </body>
 </html>
-
-
