@@ -1,4 +1,4 @@
-const CACHE_NAME = 'home-affordability-1.0.5.3'; // bump version when you change assets
+const CACHE_NAME = 'home-affordability-1.0.6'; // bump this *every time* you deploy
 const ASSETS = [
   './',
   './index.html',
@@ -12,6 +12,9 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
   );
+
+  // Immediately activate the new service worker
+  self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
@@ -24,9 +27,21 @@ self.addEventListener('activate', (event) => {
       )
     )
   );
+
+  // Take control of all open clients right away
+  self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
+  // Network-first for navigation (HTML) so new versions show up
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request).catch(() => caches.match('./index.html'))
+    );
+    return;
+  }
+
+  // Cache-first for everything else (icons, manifest, etc.)
   event.respondWith(
     caches.match(event.request).then((cached) => cached || fetch(event.request))
   );
